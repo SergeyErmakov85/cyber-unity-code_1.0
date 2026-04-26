@@ -1,0 +1,64 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Mail, CheckCircle } from "lucide-react";
+
+const EmailCapture = () => {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    const trimmed = email.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setError("Введите корректный email");
+      return;
+    }
+    // TODO: integrate with backend
+    setSubmitted(true);
+  };
+
+  return (
+    <section className="py-20 px-4 border-t border-border/50">
+      <div className="container mx-auto max-w-xl text-center space-y-6">
+        <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto">
+          <Mail className="w-7 h-7 text-primary" />
+        </div>
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+          Получай бесплатные уроки и новости
+        </h2>
+        <p className="text-muted-foreground text-sm">
+          Без спама. Только полезные материалы по RL и Unity ML-Agents.
+        </p>
+
+        {!submitted ? (
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <Input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 bg-card border-border/50 focus:border-primary"
+              maxLength={255}
+              aria-label="Email для подписки"
+            />
+            <Button type="submit" className="bg-gradient-neon shrink-0 gap-2">
+              <Mail className="w-4 h-4" />
+              Подписаться
+            </Button>
+          </form>
+        ) : (
+          <div className="flex items-center justify-center gap-2 p-4 rounded-lg bg-green-500/10 border border-green-500/30 text-green-400">
+            <CheckCircle className="w-5 h-5" />
+            <span className="font-medium">Спасибо! Проверьте почту.</span>
+          </div>
+        )}
+        {error && <p className="text-sm text-destructive">{error}</p>}
+      </div>
+    </section>
+  );
+};
+
+export default EmailCapture;
