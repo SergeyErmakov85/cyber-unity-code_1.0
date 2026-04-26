@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import LessonLayout from "@/components/LessonLayout";
 import CyberCodeBlock from "@/components/CyberCodeBlock";
 import { Card, CardContent } from "@/components/ui/card";
 import Math from "@/components/Math";
-import { Lightbulb, BookOpen, CheckCircle2, AlertTriangle, Table2 } from "lucide-react";
+import { Lightbulb, BookOpen, CheckCircle2, AlertTriangle, Table2, ArrowRight } from "lucide-react";
 
 const PYTHON_IMPLEMENTATION = `import numpy as np
 import gymnasium as gym
