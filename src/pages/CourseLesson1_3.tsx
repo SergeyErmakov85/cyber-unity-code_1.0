@@ -205,7 +205,7 @@ const CourseLesson1_3 = () => {
                 <td className="p-3">
                   Числовой сигнал обратной связи после действия.
                   <div className="mt-1">
-                    <Math display={false}>R: S \times A \to \mathbb{{R}}</Math>
+                    <Math display={false}>{`R: S \\times A \\to \\mathbb{R}`}</Math>
                   </div>
                 </td>
                 <td className="p-3">+10 за батарею, -1 за стену, -100 за яму.</td>
@@ -327,7 +327,7 @@ const CourseLesson1_3 = () => {
               </tr>
               <tr>
                 <td className="p-3">
-                  <Math display={false}>\max_{{a'}} Q(s', a')</Math>
+                  <Math display={false}>{`\\max_{a'} Q(s', a')`}</Math>
                 </td>
                 <td className="p-3">
                   Лучшая будущая оценка из следующего состояния.
