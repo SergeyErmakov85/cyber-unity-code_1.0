@@ -1,11 +1,8 @@
 import LessonLayout from "@/components/LessonLayout";
 import CyberCodeBlock from "@/components/CyberCodeBlock";
 import { Card, CardContent } from "@/components/ui/card";
-
-const BELLMAN_FORMULA =
-  "Q(s, a) ← Q(s, a) + α [ r + γ max_a' Q(s', a') − Q(s, a) ]";
-
-const TD_ERROR_FORMULA = "[ r + γ max_a' Q(s', a') − Q(s, a) ]";
+import Math from "@/components/Math";
+import { Lightbulb, BookOpen, CheckCircle2, AlertTriangle, Table2 } from "lucide-react";
 
 const PYTHON_IMPLEMENTATION = `import numpy as np
 import gymnasium as gym
@@ -92,131 +89,266 @@ print("Обучение завершено!\\n")
 print("Финальная Q-таблица (Обученный мозг агента):")
 print(np.round(Q_table, 3))`;
 
+const SEED_SNIPPET = `import random
+import numpy as np
+
+def seed_everything(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    # В реальных проектах также фиксируют зерна в средах gym`;
+
 const CourseLesson1_3 = () => {
   return (
     <LessonLayout
       lessonTitle="Q-Learning: табличный метод"
       lessonNumber="1.3"
-      duration="30 мин"
+      duration="45 мин"
       tags={["#algorithm", "#qlearning", "#tabular", "#gym"]}
       level={1}
       lessonId="1-3"
       prevLesson={{ path: "/courses/1-2", title: "Установка окружения" }}
       nextLesson={{ path: "/courses/1-4", title: "CartPole" }}
       keyConcepts={[
-        "Q-таблица как модель знаний агента",
-        "Уравнение Беллмана и TD Error",
+        "MDP: состояние, действие, награда, политика",
+        "Q-таблица как карта качества действий",
+        "Уравнение Беллмана и TD Error в LaTeX",
         "Model-free и off-policy свойства Q-learning",
-        "Epsilon-greedy и epsilon decay",
-        "Практическая реализация на FrozenLake в Gymnasium",
+        "Epsilon-greedy и затухание исследования",
+        "Полный Python-пайплайн на FrozenLake",
       ]}
     >
       <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4">1. Интуитивное введение</h2>
-        <p className="text-muted-foreground leading-relaxed mb-3">
-          Обучение с подкреплением (RL) — одна из фундаментальных парадигм машинного
-          обучения, где агент учится принимать последовательные решения в динамической
-          среде и максимизировать суммарную выгоду.
-        </p>
-        <p className="text-muted-foreground leading-relaxed mb-3">
-          Q-обучение решает задачу отложенных последствий: действие может не давать
-          мгновенной пользы, но быть ключевым для будущего успеха. Алгоритм учится
-          видеть такие связи и оценивать долгосрочную ценность каждого шага.
-        </p>
-        <p className="text-muted-foreground leading-relaxed">
-          Интуитивная аналогия: обучение езде на велосипеде или освоение новой игры.
-          В начале агент действует хаотично, получает награды и штрафы, а затем через
-          тысячи проб выстраивает устойчивую стратегию поведения.
-        </p>
+        <Card className="bg-gradient-to-br from-blue-500/5 via-card/40 to-purple-500/5 border-primary/20">
+          <CardContent className="p-6">
+            <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
+              <Lightbulb className="w-5 h-5 text-primary" />
+              1. Интуитивное введение
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              Обучение с подкреплением (Reinforcement Learning, RL) представляет собой
+              одну из трех фундаментальных парадигм машинного обучения, наряду с
+              обучением с учителем (Supervised Learning) и обучением без учителя
+              (Unsupervised Learning). В то время как классические алгоритмы машинного
+              обучения опираются на заранее подготовленные наборы данных с правильными
+              ответами или ищут скрытые закономерности в неразмеченной информации,
+              обучение с подкреплением решает принципиально иную задачу.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              Оно отвечает на вопрос: как интеллектуальный агент должен принимать
+              последовательные решения в динамической, постоянно меняющейся среде, чтобы
+              максимизировать итоговую выгоду.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-3">
+              Проблема, которую решает Q-обучение, заключается в необходимости поиска
+              оптимальной стратегии поведения в условиях неопределенности и отложенных
+              последствий. Выбор конкретного пути может не принести мгновенной пользы, но
+              открыть доступ к колоссальному успеху в будущем.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Аналогия: обучение езде на велосипеде или новой сложной игре через пробу и
+              ошибку. В начале агент действует хаотично, затем накапливает опыт и
+              формирует внутреннюю «интуицию» о том, какие действия в каких состояниях
+              действительно ведут к цели.
+            </p>
+          </CardContent>
+        </Card>
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4">2. Ключевые концепции</h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Любая RL-задача формулируется как Марковский процесс принятия решений (MDP),
-          где важно четко определить состояние, действие, награду и политику.
+        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
+          <Table2 className="w-5 h-5 text-primary" />
+          2. Ключевые концепции
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-3">
+          Любая задача обучения с подкреплением формулируется в терминах Марковского
+          процесса принятия решений (Markov Decision Process, MDP).
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {[
-            {
-              title: "Состояние (s)",
-              desc: "Полное описание текущего положения агента в среде.",
-            },
-            {
-              title: "Действие (a)",
-              desc: "Конкретный шаг или решение агента в состоянии s.",
-            },
-            {
-              title: "Награда (r)",
-              desc: "Числовой сигнал обратной связи от среды после действия.",
-            },
-            {
-              title: "Стратегия (π)",
-              desc: "Правило, определяющее какое действие выбирать в каждом состоянии.",
-            },
-            {
-              title: "Q-значение Q(s, a)",
-              desc: "Оценка долгосрочной полезности действия a в состоянии s.",
-            },
-          ].map((item) => (
-            <Card key={item.title} className="bg-card/40 border-border/30">
-              <CardContent className="p-4">
-                <p className="font-semibold text-sm text-foreground">{item.title}</p>
-                <p className="text-sm text-muted-foreground mt-1">{item.desc}</p>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="overflow-x-auto rounded-lg border border-border/30 bg-card/30">
+          <table className="w-full text-sm">
+            <thead className="bg-primary/10">
+              <tr className="text-left">
+                <th className="p-3 font-semibold text-foreground">Концепция</th>
+                <th className="p-3 font-semibold text-foreground">Обозначение</th>
+                <th className="p-3 font-semibold text-foreground">Формальное определение</th>
+                <th className="p-3 font-semibold text-foreground">
+                  Интуитивный пример (GridWorld)
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/30 text-muted-foreground">
+              <tr>
+                <td className="p-3 font-medium text-foreground">Состояние (State)</td>
+                <td className="p-3">
+                  <Math display={false}>s</Math>
+                </td>
+                <td className="p-3">
+                  Полное описание текущего положения агента в среде. Множество всех
+                  состояний обозначается как <Math display={false}>S</Math>.
+                </td>
+                <td className="p-3">Координаты робота: например, x=2, y=3.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Действие (Action)</td>
+                <td className="p-3">
+                  <Math display={false}>a</Math>
+                </td>
+                <td className="p-3">
+                  Конкретный шаг, принимаемый агентом в ответ на состояние.
+                </td>
+                <td className="p-3">Вверх, Вниз, Влево, Вправо.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Награда (Reward)</td>
+                <td className="p-3">
+                  <Math display={false}>r</Math>
+                </td>
+                <td className="p-3">
+                  Числовой сигнал обратной связи после действия.
+                  <div className="mt-1">
+                    <Math display={false}>R: S \times A \to \mathbb{{R}}</Math>
+                  </div>
+                </td>
+                <td className="p-3">+10 за батарею, -1 за стену, -100 за яму.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Стратегия (Policy)</td>
+                <td className="p-3">
+                  <Math display={false}>\pi</Math>
+                </td>
+                <td className="p-3">
+                  Набор правил, определяющий поведение агента.
+                </td>
+                <td className="p-3">«Если рядом яма — иди в противоположную сторону».</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Q-значение (Q-value)</td>
+                <td className="p-3">
+                  <Math display={false}>Q(s, a)</Math>
+                </td>
+                <td className="p-3">
+                  Оценка ожидаемой долгосрочной полезности выбора действия в состоянии.
+                </td>
+                <td className="p-3">Ценность шага вправо из клетки (2,3): 5.5.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <p className="text-muted-foreground leading-relaxed mt-4">
-          Цель Q-обучения — сформировать оптимальную стратегию, вычислив Q-значения для
-          каждой пары «состояние-действие».
+          Чтобы эти термины сложились в единую картину, рассмотрим лабиринт 3х3.
+          Агент стартует в нижнем левом углу, а цель Q-обучения — выучить идеальную
+          стратегию для всех клеток.
         </p>
       </section>
 
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4">3. Основная идея Q-обучения</h2>
         <p className="text-muted-foreground leading-relaxed mb-3">
-          Табличный Q-learning строит двумерную Q-таблицу: строки — состояния, столбцы —
-          действия, а ячейки хранят оценку качества выбора конкретного действия в
-          конкретном состоянии.
+          Табличный Q-learning строит и постоянно обновляет двумерную Q-таблицу:
+          строки — состояния, столбцы — действия, а в ячейках хранится «качество»
+          пары <Math display={false}>Q(s, a)</Math>.
         </p>
         <p className="text-muted-foreground leading-relaxed mb-3">
-          Метод <strong className="text-foreground">model-free</strong>: не требует
-          математической модели среды. Агент учится только из опыта взаимодействия.
+          Процесс обучения строится циклом: определить состояние → выбрать действие →
+          получить награду и новое состояние → обновить таблицу.
         </p>
-        <p className="text-muted-foreground leading-relaxed">
-          Метод <strong className="text-foreground">off-policy</strong>: агент может
-          физически исследовать мир случайно, но обновлять оценки так, будто в будущем
-          будет действовать оптимально.
-        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <Card className="bg-card/40 border-blue-500/20">
+            <CardContent className="p-4">
+              <p className="font-semibold text-sm text-blue-400 mb-1">Model-free</p>
+              <p className="text-sm text-muted-foreground">
+                Агенту не нужна модель среды заранее. Он учится напрямую из опыта проб
+                и ошибок.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-card/40 border-purple-500/20">
+            <CardContent className="p-4">
+              <p className="font-semibold text-sm text-purple-400 mb-1">Off-policy</p>
+              <p className="text-sm text-muted-foreground">
+                Агент может действовать случайно, но в оценках хранить оптимальную
+                стратегию, что ускоряет обучение.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </section>
 
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4">4. Формула Q-обучения</h2>
-        <Card className="bg-card/40 border-primary/20">
-          <CardContent className="p-4">
-            <p className="font-mono text-primary text-sm sm:text-base break-words">
-              {BELLMAN_FORMULA}
-            </p>
-          </CardContent>
-        </Card>
+        <Math>{`Q(s, a) \\leftarrow Q(s, a) + \\alpha \\left[ r + \\gamma \\max_{a'} Q(s', a') - Q(s, a) \\right]`}</Math>
         <p className="text-muted-foreground leading-relaxed mt-4 mb-3">
-          Где α — скорость обучения, γ — фактор дисконтирования будущего, а
-          max_a'Q(s',a') — оценка лучшего будущего действия в новом состоянии.
+          Каждый символ в уравнении управляет поведением агента.
         </p>
+        <div className="overflow-x-auto rounded-lg border border-border/30 bg-card/30 mb-4">
+          <table className="w-full text-sm">
+            <thead className="bg-primary/10">
+              <tr className="text-left">
+                <th className="p-3 font-semibold text-foreground">Термин</th>
+                <th className="p-3 font-semibold text-foreground">Описание</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/30 text-muted-foreground">
+              <tr>
+                <td className="p-3">
+                  <Math display={false}>Q(s, a)</Math> (слева)
+                </td>
+                <td className="p-3">
+                  Новое знание: обновленное значение качества для текущего состояния и
+                  действия.
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3">
+                  <Math display={false}>Q(s, a)</Math> (справа)
+                </td>
+                <td className="p-3">Старое знание до текущего шага.</td>
+              </tr>
+              <tr>
+                <td className="p-3">
+                  <Math display={false}>\alpha</Math> (Learning Rate)
+                </td>
+                <td className="p-3">
+                  Скорость обучения в диапазоне от 0 до 1.
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3">
+                  <Math display={false}>r</Math>
+                </td>
+                <td className="p-3">Мгновенная награда за действие.</td>
+              </tr>
+              <tr>
+                <td className="p-3">
+                  <Math display={false}>\gamma</Math> (Discount Factor)
+                </td>
+                <td className="p-3">
+                  Важность будущих наград по сравнению с текущими.
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3">
+                  <Math display={false}>\max_{{a'}} Q(s', a')</Math>
+                </td>
+                <td className="p-3">
+                  Лучшая будущая оценка из следующего состояния.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">
+          Почему формула работает (TD Error)
+        </h3>
+        <Math>{`\\left[ r + \\gamma \\max_{a'} Q(s', a') - Q(s, a) \\right]`}</Math>
         <p className="text-muted-foreground leading-relaxed">
-          Ключевая часть формулы — TD Error (ошибка временного различия), то есть мера
-          расхождения между реальностью и старым ожиданием агента.
+          Это и есть ошибка временного различия (Temporal Difference Error). Она
+          показывает меру «удивления» агента и направление корректировки значения.
         </p>
-        <Card className="bg-card/30 border-border/30 mt-4">
-          <CardContent className="p-4">
-            <p className="font-mono text-sm text-primary break-words">{TD_ERROR_FORMULA}</p>
-          </CardContent>
-        </Card>
-        <p className="text-muted-foreground leading-relaxed mt-4">
-          Если TD Error положителен, действие оказалось лучше ожидаемого и Q-значение
-          растет. Если отрицателен — действие оказалось хуже и Q-значение снижается.
-        </p>
+        <h3 className="text-xl font-semibold text-foreground mt-4 mb-2">
+          Пошаговый числовой пример
+        </h3>
+        <Math>{`Q(0, 1) \\leftarrow 0 + 0.1 \\times [10 + 0.9 \\times 0 - 0]`}</Math>
+        <Math>{`Q(0, 1) \\leftarrow 1.0`}</Math>
       </section>
 
       <section>
@@ -225,7 +357,7 @@ const CourseLesson1_3 = () => {
           {[
             "Инициализируем Q-таблицу и гиперпараметры (α, γ, ε).",
             "Сбрасываем среду в начальное состояние.",
-            "Выбираем действие по epsilon-greedy (exploration/exploitation).",
+            "Выбираем действие по ε-жадной стратегии (exploration/exploitation).",
             "Выполняем действие и получаем (s', r, done).",
             "Обновляем Q(s,a) уравнением Беллмана.",
             "Переходим в новое состояние и повторяем до конца эпизода.",
@@ -238,9 +370,9 @@ const CourseLesson1_3 = () => {
           ))}
         </div>
         <p className="text-muted-foreground leading-relaxed mt-4">
-          Epsilon decay критически важен: в начале обучения агент исследует мир почти
-          полностью случайно, а затем постепенно переходит к использованию уже выученной
-          стратегии.
+          Постепенное уменьшение <Math display={false}>\epsilon</Math> критически важно:
+          сначала агент исследует мир хаотично, затем все чаще использует выученную
+          стратегию.
         </p>
       </section>
 
@@ -281,72 +413,140 @@ const CourseLesson1_3 = () => {
             </Card>
           ))}
         </div>
-        <p className="text-muted-foreground leading-relaxed mt-4 mb-2">
-          Как распространяется знание: сначала агент случайно находит выгодный переход
-          рядом с целью, затем эта ценность «перетекает» в более ранние состояния.
+        <p className="text-muted-foreground leading-relaxed mt-4">
+          Карта среды: <code className="text-primary text-xs">S F F F F H F H F F F H H F F G</code>
         </p>
-        <Card className="bg-card/30 border-border/30">
-          <CardContent className="p-4 space-y-2">
-            <p className="font-mono text-xs text-primary">
-              Q(14, 2) ← 0 + 0.8 × [1 + 0.95 × 0 − 0] = 0.8
-            </p>
-            <p className="font-mono text-xs text-primary">
-              Q(13, 2) ← 0 + 0.8 × [0 + 0.95 × 0.8 − 0] = 0.608
-            </p>
-          </CardContent>
-        </Card>
+        <div className="overflow-x-auto rounded-lg border border-border/30 bg-card/30 mt-4">
+          <table className="w-full text-sm">
+            <thead className="bg-primary/10">
+              <tr className="text-left">
+                <th className="p-3 font-semibold text-foreground">Состояние</th>
+                <th className="p-3 font-semibold text-foreground">Влево (0)</th>
+                <th className="p-3 font-semibold text-foreground">Вниз (1)</th>
+                <th className="p-3 font-semibold text-foreground">Вправо (2)</th>
+                <th className="p-3 font-semibold text-foreground">Вверх (3)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/30 text-muted-foreground">
+              <tr>
+                <td className="p-3 font-medium text-foreground">0 (Старт), шаг 0</td>
+                <td className="p-3">0.000</td>
+                <td className="p-3">0.000</td>
+                <td className="p-3">0.000</td>
+                <td className="p-3">0.000</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">14 (Перед целью), шаг 0</td>
+                <td className="p-3">0.000</td>
+                <td className="p-3">0.000</td>
+                <td className="p-3">0.000</td>
+                <td className="p-3">0.000</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">0 (Старт), после обучения</td>
+                <td className="p-3">0.531</td>
+                <td className="p-3">0.590</td>
+                <td className="p-3">0.531</td>
+                <td className="p-3">0.531</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-muted-foreground leading-relaxed mt-4 mb-2">
+          Перетекание ценности назад от цели:
+        </p>
+        <Math>{`Q(14, 2) \\leftarrow 0 + 0.8 \\times [1 + 0.95 \\times 0 - 0] = 0.8`}</Math>
+        <Math>{`Q(13, 2) \\leftarrow 0 + 0.8 \\times [0 + 0.95 \\times 0.8 - 0] = 0.608`}</Math>
       </section>
 
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4">
           8. Пошаговый разбор кода (Математика → Алгоритм → Код)
         </h2>
-        <div className="space-y-3">
-          <Card className="bg-card/40 border-border/30">
-            <CardContent className="p-4">
-              <p className="text-sm text-foreground font-semibold">Q-таблица</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                <code className="text-primary text-xs">Q_table = np.zeros((state_size, action_size))</code>
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-border/30">
-            <CardContent className="p-4">
-              <p className="text-sm text-foreground font-semibold">Epsilon-greedy</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                С вероятностью ε выбирается случайное действие, иначе —
-                <code className="text-primary text-xs"> np.argmax(Q_table[state, :])</code>.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-border/30">
-            <CardContent className="p-4">
-              <p className="text-sm text-foreground font-semibold">Bellman update</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Через <code className="text-primary text-xs">td_target</code>,
-                <code className="text-primary text-xs">td_error</code> и обновление
-                значения <code className="text-primary text-xs">Q_table[state, action]</code>.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-border/30">
-            <CardContent className="p-4">
-              <p className="text-sm text-foreground font-semibold">Epsilon Decay</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Постепенное снижение случайности:
-                <code className="text-primary text-xs">
-                  {" "}
-                  epsilon = min_epsilon + (max_epsilon - min_epsilon) * exp(-decay_rate * episode)
-                </code>
-                .
-              </p>
-            </CardContent>
-          </Card>
+        <div className="overflow-x-auto rounded-lg border border-border/30 bg-card/30">
+          <table className="w-full text-sm">
+            <thead className="bg-primary/10">
+              <tr className="text-left">
+                <th className="p-3 font-semibold text-foreground">
+                  Математический элемент / Концепция
+                </th>
+                <th className="p-3 font-semibold text-foreground">
+                  Объяснение логики и механики
+                </th>
+                <th className="p-3 font-semibold text-foreground">Фрагмент Python-кода</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/30 text-muted-foreground">
+              <tr>
+                <td className="p-3 font-medium text-foreground">Матрица Q(S, A)</td>
+                <td className="p-3">
+                  Таблица знаний агента, инициализация нулями означает tabula rasa.
+                </td>
+                <td className="p-3">
+                  <code className="text-primary text-xs">
+                    Q_table = np.zeros((state_size, action_size))
+                  </code>
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Epsilon-Greedy</td>
+                <td className="p-3">
+                  При числе меньше ε агент исследует, иначе эксплуатирует знания.
+                </td>
+                <td className="p-3">
+                  <code className="text-primary text-xs">
+                    if exp_tradeoff {"<"} epsilon: action = env.action_space.sample()
+                  </code>
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Функция среды</td>
+                <td className="p-3">
+                  Переход в новое состояние и получение награды через step().
+                </td>
+                <td className="p-3">
+                  <code className="text-primary text-xs">
+                    new_state, reward, done, truncated, info = env.step(action)
+                  </code>
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Оценка будущего</td>
+                <td className="p-3">
+                  Выбор максимальной оценки в следующем состоянии.
+                </td>
+                <td className="p-3">
+                  <code className="text-primary text-xs">np.max(Q_table[new_state, :])</code>
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Уравнение Беллмана</td>
+                <td className="p-3">Центральное обновление текущего значения.</td>
+                <td className="p-3">
+                  <code className="text-primary text-xs">
+                    td_target = reward + gamma * np.max(Q_table[new_state, :])
+                  </code>
+                </td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium text-foreground">Epsilon Decay</td>
+                <td className="p-3">Экспоненциальное затухание случайности.</td>
+                <td className="p-3">
+                  <code className="text-primary text-xs">
+                    epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
+                  </code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4">9. Распространенные ошибки</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
+          <AlertTriangle className="w-5 h-5 text-destructive" />
+          9. Распространенные ошибки
+        </h2>
         <div className="space-y-3">
           {[
             "Попытка применять табличный Q-learning в средах с непрерывными действиями.",
@@ -367,25 +567,44 @@ const CourseLesson1_3 = () => {
           Для борьбы с переоценкой часто используют Double Q-learning, а для
           воспроизводимости — фиксацию seed во всех источниках случайности.
         </p>
+        <CyberCodeBlock language="python" filename="seed_everything.py">
+          {SEED_SNIPPET}
+        </CyberCodeBlock>
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4">10. Ключевые выводы</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
+          <CheckCircle2 className="w-5 h-5 text-green-400" />
+          10. Ключевые выводы
+        </h2>
         <Card className="bg-gradient-to-br from-primary/5 via-card/40 to-secondary/5 border-primary/20">
           <CardContent className="p-6 space-y-3">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Табличный Q-learning — базовый и прозрачный алгоритм RL, который оценивает
-              долгосрочную ценность каждого действия через многократное применение
-              уравнения Беллмана.
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Он отлично подходит для дискретных задач небольшого размера (GridWorld,
-              лабиринты, простые игры), но ограничен проклятием размерности.
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Следующий эволюционный шаг — Deep Q-Network (DQN), где Q-таблица заменяется
-              нейросетевой аппроксимацией, но математическое ядро остается тем же.
-            </p>
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Что такое Q-обучение:</strong> модель
+                оптимизации (model-free, off-policy), оценивающая долгосрочную ценность
+                каждого действия.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Когда использовать:</strong> дискретные
+                и небольшие пространства состояний/действий (лабиринты, GridWorld,
+                простые игры, базовая оптимизация процессов).
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <strong className="text-foreground">Ограничение:</strong> проклятие
+                размерности. Для больших/непрерывных пространств используют DQN, где
+                Q-таблица заменяется нейросетевой аппроксимацией.
+              </p>
+            </div>
+            <Card className="bg-card/40 border-border/30">
+              <CardContent className="p-4 flex gap-3 items-start">
+                <BookOpen className="w-4 h-4 text-primary mt-0.5" />
+                <p className="text-xs text-muted-foreground">
+                  Математическое сердце DQN сохраняется: это та же TD-ошибка и идея
+                  уравнения Беллмана, разобранная в табличном Q-learning.
+                </p>
+              </CardContent>
+            </Card>
           </CardContent>
         </Card>
       </section>
