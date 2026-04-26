@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import LessonLayout from "@/components/LessonLayout";
 import CyberCodeBlock from "@/components/CyberCodeBlock";
 import { Card, CardContent } from "@/components/ui/card";
 import Math from "@/components/Math";
-import { Lightbulb, BookOpen, CheckCircle2, AlertTriangle, Table2 } from "lucide-react";
+import { Lightbulb, BookOpen, CheckCircle2, AlertTriangle, Table2, ArrowRight } from "lucide-react";
 
 const PYTHON_IMPLEMENTATION = `import numpy as np
 import gymnasium as gym
@@ -399,6 +400,23 @@ const CourseLesson1_3 = () => {
           FrozenLake — сетка 4x4 с безопасными клетками, прорубями и финишем.
           В этой среде агент учится находить путь к цели, избегая провалов.
         </p>
+        <Link
+          to="/projects/frozen-lake"
+          className="group flex items-center gap-3 p-4 mb-4 rounded-lg border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 hover:shadow-glow-cyan transition-all"
+        >
+          <div className="flex-1">
+            <div className="text-xs text-primary font-semibold uppercase tracking-wider mb-1">
+              Практический проект
+            </div>
+            <div className="text-foreground font-medium">
+              Открыть интерактивный проект «Frozen Lake»
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Полная реализация Q-Learning на этой среде с визуализацией обучения агента.
+            </p>
+          </div>
+          <ArrowRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" />
+        </Link>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
             "S (Start) — стартовая позиция агента.",
