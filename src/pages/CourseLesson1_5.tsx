@@ -90,7 +90,7 @@ const quizQuestions = [
   },
 ];
 
-const CourseLesson1_4 = () => {
+const CourseLesson1_5 = () => {
   return (
     <LessonLayout
       lessonId="1-5"
