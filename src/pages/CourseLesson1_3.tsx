@@ -327,7 +327,7 @@ const CourseLesson1_3 = () => {
               </tr>
               <tr>
                 <td className="p-3">
-                  <Math display={false}>\max_{{a'}} Q(s', a')</Math>
+                  <Math display={false}>{`\\max_{a'} Q(s', a')`}</Math>
                 </td>
                 <td className="p-3">
                   Лучшая будущая оценка из следующего состояния.
