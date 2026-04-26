@@ -42,7 +42,7 @@ export const ALL_BADGES: Badge[] = [
   { id: "streak_7", name: "Streak-7", description: "7 дней подряд", icon: "🔥" },
 ];
 
-const level1Paths = ["/courses/1-1", "/courses/1-2", "/courses/1-3", "/courses/1-4"];
+const level1Paths = ["/courses/1-1", "/courses/1-2", "/courses/1-3", "/courses/1-4", "/courses/1-5", "/courses/1-6", "/courses/1-7"];
 const level2Paths = ["/courses/2-1", "/courses/2-2", "/courses/2-3", "/courses/2-4", "/courses/2-5", "/courses/2-6"];
 const level3Paths = ["/courses/3-1", "/courses/3-2", "/courses/3-3", "/courses/3-4", "/courses/3-5", "/courses/3-6", "/courses/3-7"];
 const allLessonPaths = [...level1Paths, ...level2Paths, ...level3Paths];
