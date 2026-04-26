@@ -1,8 +1,9 @@
 import LessonLayout from "@/components/LessonLayout";
+
 import CyberCodeBlock from "@/components/CyberCodeBlock";
-import Math from "@/components/Math";
 import Quiz from "@/components/Quiz";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -10,996 +11,724 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  Sigma,
-  GitBranch,
-  Target,
-  TrendingUp,
-  Compass,
+  ExternalLink,
   Lightbulb,
+  Shield,
+  Shuffle,
+  Database,
+  RefreshCw,
+  Brain,
+  Newspaper,
+  ArrowRightLeft,
   CheckCircle2,
   BookOpen,
-  Calculator,
-  Infinity as InfinityIcon,
-  Gauge,
-  Route,
-  Workflow,
-  Bot,
-  Trees,
-  ArrowRight,
-  ArrowLeft,
+  Save,
+  Scissors,
 } from "lucide-react";
 import CrossLinkToHub from "@/components/CrossLinkToHub";
-import ValueFunctionViz from "@/components/math-rl/ValueFunctionViz";
 
 const quizQuestions = [
   {
-    question: "Какая пятёрка элементов определяет MDP?",
+    question: "Зачем в DQN используется Target Network?",
     options: [
-      "(S, A, P, R, V)",
-      "(S, A, T, R, γ)",
-      "(S, A, Q, π, γ)",
-      "(O, A, T, R, γ)",
+      "Для ускорения обучения",
+      "Для стабилизации — target не меняется каждый шаг",
+      "Для увеличения размера батча",
+      "Target Network не используется в DQN",
     ],
     correctIndex: 1,
     explanation:
-      "MDP формально задаётся кортежем (S, A, T, R, γ): множество состояний S, множество действий A, функция переходов T(s'|s,a), функция награды R и дисконт-фактор γ ∈ [0,1].",
+      "Если вычислять target из той же сети, которую мы обучаем, — цель «убегает» на каждом шаге. Target Network обновляется редко (каждые N эпизодов), что стабилизирует обучение.",
   },
   {
-    question: "Чем V^π(s) отличается от Q^π(s, a)?",
+    question: "Что хранит Replay Buffer?",
     options: [
-      "Ничем — это одна и та же функция",
-      "V зависит от состояния, Q — от пары (состояние, действие)",
-      "V используется в DQN, Q — в Q-Learning",
-      "V — для эпизодических задач, Q — для непрерывных",
-    ],
-    correctIndex: 1,
-    explanation:
-      "V^π(s) — ожидаемый дисконтированный возврат из состояния s при следовании политике π. Q^π(s,a) — то же самое, но с уточнением, что сначала выполняется действие a, а дальше работает π. Связь: V^π(s) = Σ_a π(a|s) · Q^π(s,a).",
-  },
-  {
-    question: "Что выражает уравнение Беллмана для V^π?",
-    options: [
-      "Ценность состояния = награда на этом шаге",
-      "Ценность состояния = сумма всех будущих наград без дисконта",
-      "Ценность = ожидание немедленной награды + γ·V^π(следующего состояния)",
-      "Ценность состояния равна нулю в терминальном состоянии",
+      "Только последние наблюдения",
+      "Веса нейронной сети",
+      "Переходы (s, a, r, s', done)",
+      "Градиенты функции потерь",
     ],
     correctIndex: 2,
     explanation:
-      "Уравнение Беллмана выражает рекурсивную структуру: V^π(s) = E[R + γ·V^π(s')]. Ценность состояния раскладывается на немедленную награду плюс дисконтированную ценность следующего состояния — это и делает возможными алгоритмы Value Iteration, Q-Learning, DQN.",
+      "Replay Buffer хранит переходы (state, action, reward, next_state, done). Случайная выборка из буфера разрушает корреляцию между последовательными шагами и позволяет переиспользовать опыт.",
   },
   {
-    question: "Как связаны оптимальная Q* и оптимальная политика π*?",
+    question: "Как работает epsilon-greedy с decay?",
     options: [
-      "π*(s) = argmin_a Q*(s, a)",
-      "π*(s) = argmax_a Q*(s, a)",
-      "π* = Q* — это одно и то же",
-      "π*(s) случайна при любой Q*",
+      "ε всегда равен 0.5",
+      "ε начинается высоким и постепенно уменьшается",
+      "ε увеличивается со временем",
+      "ε случайно меняется каждый эпизод",
     ],
     correctIndex: 1,
     explanation:
-      "Если знаешь Q*, оптимальная политика тривиальна: в каждом состоянии выбирать действие с максимальным Q*. Именно поэтому алгоритмы типа Q-Learning и DQN учат Q-функцию — они решают задачу планирования автоматически.",
+      "ε начинается с 1.0 (100% случайных действий) и экспоненциально уменьшается до ~0.01. Это обеспечивает исследование в начале и эксплуатацию знаний в конце обучения.",
   },
   {
-    question: "Почему γ обычно выбирают строго меньше 1 в непрерывных задачах?",
+    question: "Какая функция потерь обычно используется в DQN?",
     options: [
-      "Чтобы ускорить обучение",
-      "Чтобы бесконечный ряд наград сходился, а V(s) был конечным",
-      "Так требует PyTorch",
-      "γ < 1 делает задачу стохастической",
+      "Cross-Entropy Loss",
+      "Hinge Loss",
+      "MSE Loss (или Huber Loss)",
+      "KL Divergence",
     ],
-    correctIndex: 1,
+    correctIndex: 2,
     explanation:
-      "В непрерывных (non-episodic) задачах агент может жить бесконечно. Если γ = 1, ряд Σ γᵏ·r может расходиться. γ < 1 геометрически убывает и гарантирует сходимость; эффективный горизонт ≈ 1/(1−γ).",
+      "DQN минимизирует разницу между предсказанным Q(s,a) и target-значением. MSE Loss подходит, но Huber Loss (SmoothL1) более устойчив к выбросам — он квадратичен для малых ошибок и линеен для больших.",
+  },
+  {
+    question: "Как часто обновляется Target Network в классическом DQN?",
+    options: [
+      "Каждый шаг",
+      "Каждый эпизод",
+      "Каждые N шагов (hard update)",
+      "Никогда — она фиксирована",
+    ],
+    correctIndex: 2,
+    explanation:
+      "В классическом DQN target-сеть обновляется полным копированием весов (hard update) каждые N шагов. В некоторых вариантах используют soft update (плавное смешивание весов).",
   },
 ];
 
-const CourseLesson1_5 = () => {
+const CourseLesson1_4 = () => {
   return (
     <LessonLayout
-      lessonId="1-5"
-      lessonTitle="Марковские процессы принятия решений (MDP)"
-      lessonNumber="1.5"
-      duration="35 мин"
-      tags={["#theory", "#math", "#bellman"]}
-      level={1}
-      prevLesson={{ path: "/courses/1-4", title: "DQN с нуля на PyTorch" }}
-      nextLesson={{ path: "/courses/1-7", title: "Exploration vs Exploitation" }}
+      lessonId="1-4"
+      lessonTitle="DQN с нуля на PyTorch"
+      lessonNumber="1.4"
+      duration="45 мин"
+      tags={["#code", "#pytorch", "#dqn", "#deep"]}
+      prevLesson={{ path: "/courses/1-3", title: "CartPole агент" }}
+      nextLesson={{ path: "/courses/1-5", title: "MDP" }}
       keyConcepts={[
-        "MDP = (S, A, T, R, γ) — формальная модель задачи RL",
-        "Политика π, возврат G_t и траектории",
-        "Функции ценности V^π(s) и Q^π(s, a)",
-        "Уравнения Беллмана — рекурсивная структура ценности",
-        "Оптимальность V*, Q* и связь π*(s) = argmax_a Q*(s, a)",
+        "DQN — первый deep RL алгоритм (DeepMind, 2015)",
+        "Target Network — стабилизация обучения",
+        "Experience Replay — разрушение корреляций",
+        "Huber Loss и gradient clipping — робастное обучение",
+        "Сохранение и загрузка обученной модели",
       ]}
     >
-      {/* ── 0. Визуальная карта MDP (по рисунку) ───────────── */}
+      {/* Colab */}
+      <div className="flex justify-end">
+        <Button variant="outline" size="sm" asChild>
+          <a
+            href="https://colab.research.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            Открыть в Google Colab
+          </a>
+        </Button>
+      </div>
+
+      {/* ── 1. Intro + history ── */}
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Workflow className="w-6 h-6 text-primary" />
-          MDP одним взглядом — визуальная карта
+          <Newspaper className="w-6 h-6 text-primary" />
+          Что такое DQN и почему это прорыв?
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
-          Прежде чем погружаться в формулы, зафиксируем общую картину. На схеме ниже
-          собрано всё, о чём пойдёт речь в этом уроке: формальный кортеж{" "}
-          <Math display={false}>{"\\mathcal{M} = (\\mathcal{S}, \\mathcal{A}, P, R, \\gamma)"}</Math>,
-          петля взаимодействия <strong className="text-foreground">агент ↔ среда</strong>,
-          траектория и цель обучения.
+          В 2015 году команда DeepMind опубликовала в{" "}
+          <strong className="text-foreground">Nature</strong> статью «Human-level control
+          through deep reinforcement learning». Их алгоритм —{" "}
+          <strong className="text-primary">Deep Q-Network (DQN)</strong> — научился играть
+          в 49 игр Atari на уровне человека, получая на вход только пиксели экрана.
         </p>
-
-        {/* Формула-«шапка» MDP */}
-        <Card className="bg-card/60 backdrop-blur-sm border-primary/30 mb-6">
-          <CardContent className="p-5 text-center">
-            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">
-              Markov Decision Process
-            </p>
-            <Math>{"\\mathcal{M} = (\\mathcal{S},\\, \\mathcal{A},\\, P,\\, R,\\, \\gamma)"}</Math>
-          </CardContent>
-        </Card>
-
-        {/* Интерактивная диаграмма Agent ↔ Environment (нативный SVG) */}
-        <Card className="bg-card/60 backdrop-blur-sm border-primary/30 mb-6 overflow-hidden">
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-4 items-center">
-              {/* AGENT */}
-              <div className="relative rounded-xl border-2 border-primary/40 bg-primary/5 p-5 hover:shadow-glow-cyan transition-shadow">
-                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-background border border-primary/40 rounded text-xs font-bold text-primary uppercase tracking-wider">
-                  Agent
-                </div>
-                <div className="flex flex-col items-center gap-3 py-2">
-                  <div className="w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/40 flex items-center justify-center shadow-glow-cyan">
-                    <Bot className="w-12 h-12 text-primary" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-xs text-center text-muted-foreground leading-relaxed">
-                    Принимает решения,<br />обучается на опыте
-                  </p>
-                </div>
-              </div>
-
-              {/* CHANNELS — middle column with 3 arrows */}
-              <div className="flex flex-col gap-4 min-w-[180px]">
-                {/* action: agent → env */}
-                <div className="relative">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-[2px] bg-gradient-to-r from-primary to-primary/40 relative">
-                      <div className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs">
-                        <span className="text-primary font-mono">action </span>
-                        <Math display={false} className="!text-primary text-xs">{"a_t \\in \\mathcal{A}"}</Math>
-                      </div>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-primary -ml-2" />
-                  </div>
-                </div>
-
-                {/* reward: env → agent */}
-                <div className="relative">
-                  <div className="flex items-center gap-2">
-                    <ArrowLeft className="w-4 h-4 text-secondary -mr-2" />
-                    <div className="flex-1 h-[2px] bg-gradient-to-l from-secondary to-secondary/40 relative">
-                      <div className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs">
-                        <span className="text-secondary font-mono">reward </span>
-                        <Math display={false} className="!text-secondary text-xs">{"r_t \\in \\mathbb{R}"}</Math>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* next state: env → agent */}
-                <div className="relative">
-                  <div className="flex items-center gap-2">
-                    <ArrowLeft className="w-4 h-4 text-secondary -mr-2" />
-                    <div className="flex-1 h-[2px] bg-gradient-to-l from-secondary to-secondary/40 relative">
-                      <div className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs">
-                        <span className="text-secondary font-mono">next state </span>
-                        <Math display={false} className="!text-secondary text-xs">{"s_{t+1} \\in \\mathcal{S}"}</Math>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ENVIRONMENT */}
-              <div className="relative rounded-xl border-2 border-secondary/40 bg-secondary/5 p-5 hover:shadow-glow-purple transition-shadow">
-                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-background border border-secondary/40 rounded text-xs font-bold text-secondary uppercase tracking-wider">
-                  Environment
-                </div>
-                <div className="flex flex-col items-center gap-3 py-2">
-                  <div className="w-20 h-20 rounded-full bg-secondary/10 border-2 border-secondary/40 flex items-center justify-center shadow-glow-purple">
-                    <Trees className="w-12 h-12 text-secondary" strokeWidth={1.5} />
-                  </div>
-                  <p className="text-xs text-center text-muted-foreground leading-relaxed">
-                    Имеет состояние,<br />реагирует на действия
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-xs text-muted-foreground italic text-center mt-6 pt-4 border-t border-border/30">
-              Цикл взаимодействия: агент выбирает{" "}
-              <Math display={false}>{"a_t \\in \\mathcal{A}"}</Math>, среда отвечает наградой{" "}
-              <Math display={false}>{"r_t \\in \\mathbb{R}"}</Math> и следующим состоянием{" "}
-              <Math display={false}>{"s_{t+1} \\in \\mathcal{S}"}</Math>.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Компоненты пятёрки */}
-        <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Sigma className="w-5 h-5 text-primary" />
-          Компоненты MDP
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-          {[
-            { sym: "\\mathcal{S}", name: "State space", desc: "Множество всех возможных состояний среды" },
-            { sym: "\\mathcal{A}", name: "Action space", desc: "Множество доступных действий агента" },
-            { sym: "P", name: "Transition probability", desc: "P(s' | s, a) — вероятность перехода в s' из s после действия a" },
-            { sym: "R", name: "Reward function", desc: "R(s, a, s') — числовая награда за переход" },
-            { sym: "\\gamma", name: "Discount factor", desc: "γ ∈ [0, 1) — вес будущих наград" },
-          ].map((item) => (
-            <Card key={item.name} className="bg-card/60 backdrop-blur-sm border-primary/20 hover:shadow-glow-cyan transition-shadow">
-              <CardContent className="p-4 flex items-start gap-3">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center flex-shrink-0">
-                  <Math display={false} className="!text-primary font-bold">{item.sym}</Math>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-foreground">{item.name}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Петля agent ↔ environment */}
-        <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Route className="w-5 h-5 text-secondary" />
-          Петля взаимодействия агент ↔ среда
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-          <Card className="bg-card/60 backdrop-blur-sm border-primary/30">
-            <CardContent className="p-4 space-y-2">
-              <p className="text-xs uppercase tracking-wider text-primary font-semibold">Agent → Environment</p>
-              <Math display={false}>{"a_t \\in \\mathcal{A}"}</Math>
-              <p className="text-xs text-muted-foreground">Агент выбирает действие в момент времени <Math display={false}>{"t"}</Math>.</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/60 backdrop-blur-sm border-secondary/30">
-            <CardContent className="p-4 space-y-2">
-              <p className="text-xs uppercase tracking-wider text-secondary font-semibold">Environment → Agent</p>
-              <Math display={false}>{"r_t \\in \\mathbb{R}"}</Math>
-              <p className="text-xs text-muted-foreground">Среда возвращает награду, полученную после <Math display={false}>{"a_{t-1}"}</Math>.</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/60 backdrop-blur-sm border-secondary/30">
-            <CardContent className="p-4 space-y-2">
-              <p className="text-xs uppercase tracking-wider text-secondary font-semibold">Environment → Agent</p>
-              <Math display={false}>{"s_{t+1} \\in \\mathcal{S}"}</Math>
-              <p className="text-xs text-muted-foreground">Среда переводит агента в новое состояние согласно <Math display={false}>{"P(s' \\mid s, a)"}</Math>.</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Траектория */}
-        <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-          <GitBranch className="w-5 h-5 text-primary" />
-          Развёртка во времени — траектория
-        </h3>
-        <Card className="bg-card/60 backdrop-blur-sm border-primary/30 mb-3">
-          <CardContent className="p-5">
-            <Math>{"s_0 \\xrightarrow{a_0} r_0, s_1 \\xrightarrow{a_1} r_1, s_2 \\;\\cdots\\; \\xrightarrow{a_t} r_t, s_{t+1} \\;\\cdots"}</Math>
-          </CardContent>
-        </Card>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
-          {[
-            { sym: "s_t \\in \\mathcal{S}", desc: "состояние в момент времени t" },
-            { sym: "a_t \\in \\mathcal{A}", desc: "действие в момент времени t" },
-            { sym: "r_t \\in \\mathbb{R}", desc: "награда, полученная после действия a_{t-1}" },
-            { sym: "P(s' \\mid s, a)", desc: "вероятность перейти в s', выбрав a из s" },
-          ].map((item) => (
-            <Card key={item.desc} className="bg-card/30 border-border/40">
-              <CardContent className="p-3 flex items-center gap-3">
-                <div className="min-w-[110px] px-2 py-1 rounded bg-primary/10 border border-primary/20 text-center">
-                  <Math display={false} className="!text-primary text-xs">{item.sym}</Math>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">— {item.desc}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Цель */}
-        <Card className="bg-card/60 backdrop-blur-sm border-secondary/30 hover:shadow-glow-purple transition-shadow">
-          <CardContent className="p-5 space-y-3">
-            <div className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-secondary" />
-              <p className="text-sm font-semibold text-secondary uppercase tracking-wider">Objective</p>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Найти политику <Math display={false}>{"\\pi(a \\mid s)"}</Math>, которая
-              максимизирует <strong className="text-foreground">ожидаемый дисконтированный возврат</strong>:
-            </p>
-            <Math>{"G_t = \\sum_{k=0}^{\\infty} \\gamma^{k}\\, r_{t+k+1}"}</Math>
-            <p className="text-xs text-muted-foreground italic">
-              Все алгоритмы RL — от Q-Learning до PPO — это разные способы решить именно
-              эту оптимизационную задачу. Дальше в уроке мы разберём по очереди каждый
-              элемент схемы.
-            </p>
-          </CardContent>
-        </Card>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          В предыдущем уроке мы написали простой Q-агент для CartPole. Он работал, но имел
+          две фундаментальные проблемы. DQN решает обе:
+        </p>
       </section>
 
-      {/* ── 1. Зачем возвращаемся к MDP ───────────── */}
+      {/* ── 2. Comparison: 1.6 Q-Learning vs DQN ── */}
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Compass className="w-6 h-6 text-primary" />
-          Зачем снова про MDP?
+          <ArrowRightLeft className="w-6 h-6 text-secondary" />
+          Что изменилось по сравнению с уроком 1.6?
         </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr>
+                <th className="text-left p-3 border-b border-border/30 text-muted-foreground font-medium" />
+                <th className="text-left p-3 border-b border-border/30 text-muted-foreground font-medium">
+                  Урок 1.6 (простой Q-агент)
+                </th>
+                <th className="text-left p-3 border-b border-border/30 text-primary font-medium">
+                  Урок 1.4 (DQN)
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-muted-foreground">
+              {[
+                ["Нейросеть", "Одна Q-сеть", "Policy-сеть + Target-сеть"],
+                ["Target-значения", "Из той же сети (нестабильно)", "Из замороженной target-сети"],
+                ["Буфер опыта", "deque (простой)", "ReplayBuffer (namedtuple)"],
+                ["Loss", "MSE Loss", "Huber Loss (SmoothL1)"],
+                ["Gradient clipping", "Нет", "clip_grad_norm_ (макс. 1.0)"],
+                ["Воспроизводимость", "Нет seed", "Фиксированный seed"],
+              ].map(([feature, prev, next], i) => (
+                <tr key={i} className="border-b border-border/10">
+                  <td className="p-3 font-medium text-foreground text-xs">{feature}</td>
+                  <td className="p-3 text-xs">{prev}</td>
+                  <td className="p-3 text-xs text-primary">{next}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ── 3. Architecture ── */}
+      <section>
+        <h2 className="text-2xl font-bold text-foreground mb-4">Архитектура DQN</h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
-          В уроках 1.3 и 1.4 ты уже обучил <strong className="text-foreground">DQN</strong> —
-          он прекрасно балансирует шест, но работает «как чёрный ящик». Почему сеть учит
-          именно <em>Q-значения</em>? Почему в коде появляется выражение
-        </p>
-        <Math>{"r + \\gamma \\cdot \\max_{a'} Q(s', a')"}</Math>
-        <p className="text-muted-foreground leading-relaxed my-4">
-          и откуда берётся формула возврата
-        </p>
-        <Math>{"G_t = r_{t+1} + \\gamma\\, r_{t+2} + \\gamma^2 r_{t+3} + \\dots\\,?"}</Math>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Все эти формулы — прямое следствие математической модели, которая называется{" "}
-          <strong className="text-foreground">Марковский процесс принятия решений (MDP)</strong>.
-          В уроке 1.1 мы видели пятёрку <Math display={false}>{"(S, A, T, R, \\gamma)"}</Math>{" "}
-          в общих чертах. Теперь — настоящее погружение.
+          Две ключевые инновации DQN, которые сделали обучение стабильным:
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             {
-              icon: BookOpen,
-              title: "Язык всей RL-литературы",
-              desc: "Любая статья по RL (DQN, PPO, SAC) формулируется в терминах MDP. Без него не прочитаешь ни одной работы.",
+              icon: Shield,
+              title: (
+                <CrossLinkToHub hubPath="/algorithms/dqn" hubTitle="DQN — Target Network">
+                  Target Network
+                </CrossLinkToHub>
+              ),
+              desc: (
+                <span>
+                  Копия Q-сети, обновляемая каждые N эпизодов. Стабилизирует target-значения
+                  по{" "}
+                  <CrossLinkToHub
+                    hubPath="/math-rl/module-5"
+                    hubAnchor="глава-5"
+                    hubTitle="Математика RL — Глава 5. Уравнения Беллмана"
+                  >
+                    уравнению Беллмана
+                  </CrossLinkToHub>
+                  , предотвращая «гонку за собственным хвостом».
+                </span>
+              ),
               color: "text-primary",
+              bg: "border-primary/30",
             },
             {
-              icon: Lightbulb,
-              title: "Объяснит, что творит код",
-              desc: "Формулы Беллмана — не магия. Они следуют из определения V и Q всего за несколько строк.",
+              icon: Database,
+              title: (
+                <CrossLinkToHub hubPath="/algorithms/dqn" hubTitle="DQN — Replay Buffer">
+                  Experience Replay
+                </CrossLinkToHub>
+              ),
+              desc: "Буфер переходов (s, a, r, s', done). Разрушает корреляцию между последовательными шагами и позволяет обучаться на прошлом опыте многократно.",
               color: "text-secondary",
-            },
-            {
-              icon: Route,
-              title: "Мост к Q-Learning",
-              desc: "В уроке 1.6 мы выведем Q-Learning из уравнений Беллмана — этот урок готовит почву.",
-              color: "text-accent",
+              bg: "border-secondary/30",
             },
           ].map((item, i) => (
-            <Card key={i} className="bg-card/40 border-border/40">
-              <CardContent className="p-4 space-y-2">
-                <item.icon className={`w-5 h-5 ${item.color}`} />
-                <p className="font-semibold text-sm text-foreground">{item.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+            <Card key={i} className={`bg-card/50 ${item.bg}`}>
+              <CardContent className="p-5 space-y-2">
+                <div className="flex items-center gap-2">
+                  <item.icon className={`w-5 h-5 ${item.color}`} />
+                  <h3 className="font-bold text-foreground">{item.title}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
               </CardContent>
             </Card>
           ))}
         </div>
+
+        {/* DQN visual architecture */}
+        <div className="mt-6 p-5 rounded-xl bg-card/30 border border-border/30 space-y-4">
+          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+            Схема DQN
+          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+            <div className="flex-1 p-4 rounded-lg bg-primary/5 border border-primary/20 text-center">
+              <Brain className="w-6 h-6 text-primary mx-auto mb-1" />
+              <p className="font-bold text-sm text-primary">Policy Network</p>
+              <p className="text-xs text-muted-foreground">Обучается каждый шаг</p>
+              <p className="text-xs text-muted-foreground/60 font-mono mt-1">
+                Q_θ(s) → [Q₀, Q₁]
+              </p>
+            </div>
+            <div className="text-muted-foreground/40 text-lg hidden md:block">⇄</div>
+            <div className="text-muted-foreground/40 text-lg md:hidden">↕</div>
+            <div className="flex-1 p-4 rounded-lg bg-secondary/5 border border-secondary/20 text-center">
+              <Shield className="w-6 h-6 text-secondary mx-auto mb-1" />
+              <p className="font-bold text-sm text-secondary">Target Network</p>
+              <p className="text-xs text-muted-foreground">Копия, обновляется каждые N эп.</p>
+              <p className="text-xs text-muted-foreground/60 font-mono mt-1">
+                Q_θ⁻(s') → max Q
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div className="p-3 rounded-lg bg-accent/5 border border-accent/20 text-center">
+              <Database className="w-5 h-5 text-accent mx-auto mb-1" />
+              <p className="font-bold text-xs text-accent">Replay Buffer</p>
+              <p className="text-xs text-muted-foreground">
+                (s, a, r, s', done) × 100,000
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* DQN flow */}
+        <div className="mt-4 p-4 rounded-lg bg-card/30 border border-border/30">
+          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-3">
+            Цикл обучения DQN
+          </p>
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            {[
+              { label: "Sample batch", icon: Shuffle, color: "text-primary" },
+              { label: "Compute Q(s,a)", icon: Brain, color: "text-secondary" },
+              { label: "Compute target", icon: Shield, color: "text-accent" },
+              {
+                label: (
+                  <CrossLinkToHub
+                    hubPath="/pytorch/cheatsheet"
+                    hubAnchor="nn"
+                    hubTitle="PyTorch — Функции потерь"
+                  >
+                    Huber Loss
+                  </CrossLinkToHub>
+                ),
+                icon: RefreshCw,
+                color: "text-green-400",
+              },
+              { label: "Gradient step", icon: RefreshCw, color: "text-primary" },
+              { label: "Update target", icon: Database, color: "text-secondary" },
+            ].map((step, i) => (
+              <div key={i} className="flex items-center gap-1">
+                <span
+                  className={`flex items-center gap-1 px-2 py-1 rounded bg-muted/30 border border-border/30 ${step.color}`}
+                >
+                  <step.icon className="w-3 h-3" />
+                  <span className="text-xs">{step.label}</span>
+                </span>
+                {i < 5 && <span className="text-muted-foreground/50">→</span>}
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* ── 2. Recap (S, A, T, R, γ) ───────────── */}
+      {/* ── 4. Replay Buffer ── */}
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4">
-          Пятёрка MDP — краткое напоминание
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Подробно компоненты мы разобрали в{" "}
-          <CrossLinkToHub hubPath="/courses/1-1" hubTitle="Урок 1.1 — Что такое RL">
-            уроке 1.1
-          </CrossLinkToHub>
-          . Здесь — сжатая таблица, чтобы закрепить нотацию:
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-          {[
-            { sym: "S", name: "States", desc: "Множество состояний среды" },
-            { sym: "A", name: "Actions", desc: "Множество действий агента" },
-            { sym: "T", name: "Transitions", desc: "T(s'|s,a) — вероятность перехода" },
-            { sym: "R", name: "Rewards", desc: "R(s,a,s') — числовая награда" },
-            { sym: "\\gamma", name: "Discount", desc: "γ ∈ [0,1] — вес будущих наград" },
-          ].map((item) => (
-            <Card key={item.sym} className="bg-card/40 border-primary/20">
-              <CardContent className="p-3 text-center space-y-1">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 mx-auto flex items-center justify-center">
-                  <Math display={false} className="!text-primary font-bold">{item.sym}</Math>
-                </div>
-                <p className="text-xs font-semibold text-foreground">{item.name}</p>
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
-                  {item.desc}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <Card className="bg-card/30 border-secondary/20 mt-4">
-          <CardContent className="p-4 flex gap-3 items-start">
-            <Lightbulb className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-muted-foreground">
-              <strong className="text-foreground">Свойство Маркова:</strong> будущее состояние
-              зависит только от текущего <Math display={false}>{"s_t"}</Math> и действия{" "}
-              <Math display={false}>{"a_t"}</Math> — вся история в{" "}
-              <Math display={false}>{"s_t"}</Math> уже «зашита». Это ключевое допущение,
-              без которого нельзя использовать <Math display={false}>{"T(s' \\mid s, a)"}</Math>.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* ── 3. Траектория и возврат G_t ───────────── */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Route className="w-6 h-6 text-secondary" />
-          Траектория и возврат G<sub>t</sub>
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Агент, взаимодействуя со средой, порождает{" "}
-          <strong className="text-foreground">траекторию</strong> — цепочку состояний,
-          действий и наград:
-        </p>
-
-        <Math>{"\\tau = (s_0,\\, a_0,\\, r_1,\\, s_1,\\, a_1,\\, r_2,\\, s_2,\\, a_2,\\, r_3,\\, \\dots)"}</Math>
-
-        <p className="text-muted-foreground leading-relaxed my-4">
-          Нас интересует не только <em>текущая</em> награда, а{" "}
-          <strong className="text-foreground">дисконтированная сумма всех будущих наград</strong>,
-          называемая возвратом (return):
-        </p>
-
-        <Math>{"G_t = r_{t+1} + \\gamma\\, r_{t+2} + \\gamma^2 r_{t+3} + \\dots = \\sum_{k=0}^{\\infty} \\gamma^k\\, r_{t+k+1}"}</Math>
-
-        <p className="text-muted-foreground leading-relaxed my-4 text-sm italic">
-          Рекурсивная форма (удобна для доказательств):
-        </p>
-
-        <Math>{"G_t = r_{t+1} + \\gamma\\, G_{t+1}"}</Math>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-          <Card className="bg-card/40 border-border/40">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-                <Target className="w-4 h-4 text-primary" />
-                Эпизодические задачи
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Есть терминальное состояние: шест упал, игра закончилась, цель достигнута.
-                Сумма конечна, <Math display={false}>{"\\gamma = 1"}</Math> допустимо.
-              </p>
-              <p className="text-xs text-muted-foreground italic">
-                Примеры: CartPole, FrozenLake, Atari, шахматы.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-border/40">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-                <InfinityIcon className="w-4 h-4 text-secondary" />
-                Непрерывные задачи
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Агент живёт «бесконечно». Нужен строгий{" "}
-                <Math display={false}>{"\\gamma < 1"}</Math>, чтобы ряд сходился.
-              </p>
-              <p className="text-xs text-muted-foreground italic">
-                Примеры: управление роботом, трейдинг, управление электросетью.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* ── 4. Политика π ───────────── */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <GitBranch className="w-6 h-6 text-accent" />
-          Политика π — то, что мы оптимизируем
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          <strong className="text-foreground">Политика</strong> (policy) — функция, которая
-          говорит агенту, что делать в каждом состоянии. Именно политику мы хотим улучшить в
-          процессе обучения.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Card className="bg-card/50 border-primary/30">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-primary">Детерминированная</h3>
-              <p className="text-xs text-muted-foreground">Одно действие на каждое состояние:</p>
-              <Math>{"a = \\pi(s)"}</Math>
-              <p className="text-xs text-muted-foreground">
-                «В состоянии <Math display={false}>{"s"}</Math> всегда выбирай действие{" "}
-                <Math display={false}>{"a"}</Math>». Так работает жадный выбор после
-                обучения DQN.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/50 border-secondary/30">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-secondary">Стохастическая</h3>
-              <p className="text-xs text-muted-foreground">Распределение вероятностей действий:</p>
-              <Math>{"\\pi(a \\mid s) \\in [0, 1], \\quad \\sum_{a} \\pi(a \\mid s) = 1"}</Math>
-              <p className="text-xs text-muted-foreground">
-                «В состоянии <Math display={false}>{"s"}</Math> действие{" "}
-                <Math display={false}>{"a"}</Math> выбирается с вероятностью{" "}
-                <Math display={false}>{"\\pi(a \\mid s)"}</Math>». Основа
-                Policy Gradient и PPO (урок 2.1, 2.2).
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* ── 5. V^π и Q^π + интерактивная визуализация ───────────── */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-primary" />
-          Функции ценности: V^π(s) и Q^π(s, a)
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Чтобы выбирать политику, нужно уметь <em>оценивать</em>, насколько состояние (или
-          пара «состояние + действие») выгодно с точки зрения будущих наград.
-          Функции ценности — это ожидаемый возврат при заданной политике.
-        </p>
-
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2 mt-2">
-          Функция ценности состояния
-        </p>
-        <Math>{"V^{\\pi}(s) = \\mathbb{E}_{\\pi}\\!\\left[\\, G_t \\;\\middle|\\; s_t = s \\,\\right] = \\mathbb{E}_{\\pi}\\!\\left[\\, r_{t+1} + \\gamma\\, r_{t+2} + \\gamma^2 r_{t+3} + \\dots \\;\\middle|\\; s_t = s \\,\\right]"}</Math>
-
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2 mt-4">
-          Функция ценности действия (Q-функция)
-        </p>
-        <Math>{"Q^{\\pi}(s, a) = \\mathbb{E}_{\\pi}\\!\\left[\\, G_t \\;\\middle|\\; s_t = s,\\, a_t = a \\,\\right]"}</Math>
-
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2 mt-4">
-          Связь между ними
-        </p>
-        <Math>{"V^{\\pi}(s) = \\sum_{a} \\pi(a \\mid s)\\, Q^{\\pi}(s, a)"}</Math>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-          <Card className="bg-card/40 border-primary/20">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-primary flex items-center gap-2">
-                <Gauge className="w-4 h-4" /> V(s) — «насколько хорошо состояние»
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Ответ на вопрос: «Если я сейчас в s и следую политике π — сколько суммарной
-                дисконтированной награды я получу в среднем?»
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-secondary/20">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-secondary flex items-center gap-2">
-                <Target className="w-4 h-4" /> Q(s, a) — «насколько хорош этот ход»
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Ответ на вопрос: «Если в s я сделаю именно a (а дальше — по π), сколько
-                получу?» Именно эту функцию учит DQN.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Interactive V(s) viz */}
-        <div className="mt-6">
-          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2">
-            Интерактивно: посчитай V(s) сам
-          </p>
-          <ValueFunctionViz />
-        </div>
-      </section>
-
-      {/* ── 6. Уравнения Беллмана ───────────── */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Sigma className="w-6 h-6 text-secondary" />
-          <CrossLinkToHub
-            hubPath="/math-rl/module-5"
-            hubAnchor="глава-5"
-            hubTitle="Математика RL — Глава 5. Уравнения Беллмана"
-          >
-            Уравнения Беллмана
+          <CrossLinkToHub hubPath="/algorithms/dqn" hubTitle="DQN — Replay Buffer">
+            Replay Buffer
           </CrossLinkToHub>
         </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Главное открытие теории MDP: функции ценности обладают{" "}
-          <strong className="text-foreground">рекурсивной структурой</strong>. Ценность
-          состояния можно выразить через ценность следующего состояния — и это превращает
-          «бесконечные суммы» в решаемые алгебраические уравнения.
-        </p>
 
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2">
-          Уравнение Беллмана для V<sup>π</sup> (expectation)
-        </p>
-        <Math>{"V^{\\pi}(s) = \\sum_{a} \\pi(a \\mid s) \\sum_{s'} T(s' \\mid s, a)\\, \\bigl[\\, R(s, a, s') + \\gamma\\, V^{\\pi}(s') \\,\\bigr]"}</Math>
+        <CyberCodeBlock language="python" filename="replay_buffer.py">
+          {`import random
+from collections import deque, namedtuple
 
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2 mt-4">
-          Уравнение Беллмана для Q<sup>π</sup>
-        </p>
-        <Math>{"Q^{\\pi}(s, a) = \\sum_{s'} T(s' \\mid s, a)\\, \\Bigl[\\, R(s, a, s') + \\gamma \\sum_{a'} \\pi(a' \\mid s')\\, Q^{\\pi}(s', a') \\,\\Bigr]"}</Math>
+Transition = namedtuple('Transition',
+    ('state', 'action', 'reward', 'next_state', 'done'))
 
-        <p className="text-muted-foreground leading-relaxed my-4">
-          Если убрать индексы — получим простую идею:
-        </p>
+class ReplayBuffer:
+    def __init__(self, capacity=100000):
+        self.buffer = deque(maxlen=capacity)
 
-        <Card className="bg-gradient-to-br from-primary/5 via-card/40 to-secondary/5 border-primary/30">
-          <CardContent className="p-5 text-center space-y-2">
-            <Math>{"\\text{Ценность}(\\text{сейчас}) = \\text{награда} + \\gamma \\cdot \\text{Ценность}(\\text{потом})"}</Math>
-            <p className="text-xs text-muted-foreground mt-2">
-              ровно это мы и закодировали в target-формуле DQN:
-            </p>
-            <Math display={false}>{"r + \\gamma \\cdot \\max_{a'} Q(s', a')"}</Math>
-          </CardContent>
-        </Card>
+    def push(self, state, action, reward, next_state, done):
+        self.buffer.append(Transition(state, action, reward, next_state, done))
+
+    def sample(self, batch_size):
+        batch = random.sample(self.buffer, batch_size)
+        return Transition(*zip(*batch))
+
+    def __len__(self):
+        return len(self.buffer)`}
+        </CyberCodeBlock>
       </section>
 
-      {/* ── 7. Оптимальность V*, Q*, π* ───────────── */}
+      {/* ── 5. Huber Loss + gradient clipping ── */}
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Target className="w-6 h-6 text-primary" />
-          Оптимальность: V*, Q* и политика π*
+          <Scissors className="w-6 h-6 text-green-400" />
+          Huber Loss и Gradient Clipping
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-4">
-          Обучение — это поиск{" "}
-          <strong className="text-foreground">оптимальной политики π*</strong>, максимизирующей
-          ожидаемый возврат. Соответствующие ей функции ценности называются{" "}
-          <Math display={false}>{"V^{*}"}</Math> и <Math display={false}>{"Q^{*}"}</Math>.
+          В уроке 1.6 мы использовали MSE Loss. DQN заменяет его на два инструмента
+          для более робастного обучения:
         </p>
 
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2">
-          Определения
-        </p>
-        <Math>{"V^{*}(s) = \\max_{\\pi} V^{\\pi}(s) \\qquad Q^{*}(s, a) = \\max_{\\pi} Q^{\\pi}(s, a)"}</Math>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-card/50 border-green-500/20">
+            <CardContent className="p-4 space-y-2">
+              <h3 className="font-bold text-sm text-green-400 flex items-center gap-2">
+                <RefreshCw className="w-4 h-4" /> Huber Loss (SmoothL1)
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Комбинация MSE (для малых ошибок) и L1 (для больших). MSE придаёт огромный вес
+                выбросам, из-за чего обучение «прыгает». Huber Loss ограничивает градиент для
+                больших ошибок, делая обучение плавнее.
+              </p>
+              <CyberCodeBlock language="python" filename="loss">
+                {`# MSE: чувствителен к выбросам
+loss = nn.MSELoss()(q_values, target)
 
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2 mt-4">
-          Уравнения Беллмана оптимальности
-        </p>
-        <Math>{"V^{*}(s) = \\max_{a} \\sum_{s'} T(s' \\mid s, a)\\, \\bigl[\\, R(s, a, s') + \\gamma\\, V^{*}(s') \\,\\bigr]"}</Math>
-        <Math>{"Q^{*}(s, a) = \\sum_{s'} T(s' \\mid s, a)\\, \\bigl[\\, R(s, a, s') + \\gamma\\, \\max_{a'} Q^{*}(s', a') \\,\\bigr]"}</Math>
+# Huber: робастен к выбросам ✓
+loss = nn.SmoothL1Loss()(q_values, target)`}
+              </CyberCodeBlock>
+            </CardContent>
+          </Card>
+          <Card className="bg-card/50 border-orange-500/20">
+            <CardContent className="p-4 space-y-2">
+              <h3 className="font-bold text-sm text-orange-400 flex items-center gap-2">
+                <Scissors className="w-4 h-4" /> Gradient Clipping
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Ограничивает норму градиентов максимальным значением (1.0). Без этого один
+                «неудачный» батч может создать огромные градиенты, которые разрушат веса
+                (exploding gradients).
+              </p>
+              <CyberCodeBlock language="python" filename="clipping">
+                {`# Без clipping: градиенты могут быть огромными
+optimizer.step()
 
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2 mt-4">
-          Ключевой факт: зная <Math display={false}>{"Q^{*}"}</Math>, оптимальная политика тривиальна
-        </p>
-        <Math>{"\\pi^{*}(s) = \\arg\\max_{a} Q^{*}(s, a)"}</Math>
-
-        <Card className="bg-primary/5 border-primary/30 mt-4">
-          <CardContent className="p-4 flex gap-3 items-start">
-            <Lightbulb className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              <strong className="text-foreground">Почему все алгоритмы учат Q, а не V?</strong>{" "}
-              Чтобы выбрать действие по <Math display={false}>{"V^{*}"}</Math>, нужно знать{" "}
-              <Math display={false}>{"T(s' \\mid s, a)"}</Math> — модель среды. А по{" "}
-              <Math display={false}>{"Q^{*}"}</Math> — достаточно взять{" "}
-              <Math display={false}>{"\\arg\\max_{a} Q^{*}(s, a)"}</Math>.
-              Поэтому model-free алгоритмы (Q-Learning, DQN, SAC) работают с Q-функцией.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* ── 8. Обзор методов решения MDP ───────────── */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Workflow className="w-6 h-6 text-secondary" />
-          Как решают MDP — обзор методов
-        </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Разные алгоритмы по-разному используют уравнения Беллмана. Ниже — краткая карта
-          семейств, с которыми ты будешь встречаться весь курс:
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {[
-            {
-              name: "Value Iteration",
-              model: "model-based",
-              desc: "Знаем T и R. Итеративно применяем уравнение Беллмана оптимальности к V. Гарантированно сходится к V*.",
-              color: "border-primary/30",
-              label: "text-primary",
-            },
-            {
-              name: "Policy Iteration",
-              model: "model-based",
-              desc: "Чередуем: оценку V^π (при фиксированной π) и улучшение π (жадно по V^π). Сходимость быстрее, чем у VI.",
-              color: "border-primary/30",
-              label: "text-primary",
-            },
-            {
-              name: "Q-Learning",
-              model: "model-free",
-              desc: "T и R неизвестны. Обновляем табличку Q на опыте. Урок 1.6 — от уравнения Беллмана до кода.",
-              color: "border-secondary/30",
-              label: "text-secondary",
-            },
-            {
-              name: "DQN / SAC / PPO",
-              model: "model-free + deep",
-              desc: "То же самое, но Q (или π) представлены нейросетью. Работают в непрерывных или огромных пространствах.",
-              color: "border-secondary/30",
-              label: "text-secondary",
-            },
-          ].map((m) => (
-            <Card key={m.name} className={`bg-card/40 ${m.color}`}>
-              <CardContent className="p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className={`font-bold text-sm ${m.label}`}>{m.name}</h3>
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono px-2 py-0.5 rounded bg-muted/30">
-                    {m.model}
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
-              </CardContent>
-            </Card>
-          ))}
+# С clipping: норма ≤ 1.0 ✓
+torch.nn.utils.clip_grad_norm_(
+    policy_net.parameters(), max_norm=1.0
+)
+optimizer.step()`}
+              </CyberCodeBlock>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
-      {/* ── 9. Код: Value Iteration на gridworld ───────────── */}
+      {/* ── 6. Full DQN code ── */}
       <section>
         <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <Calculator className="w-6 h-6 text-primary" />
-          Код: Value Iteration на крошечном gridworld
+          <Brain className="w-6 h-6 text-primary" />
+          Полный код DQN-агента
         </h2>
-        <p className="text-muted-foreground leading-relaxed mb-4">
-          Чтобы увидеть, как формула Беллмана превращается в реальный алгоритм — реализуем
-          Value Iteration на среде 4×4. Модель (T и R) известна, поэтому решение находится без
-          обучения, одной итеративной математикой.
+        <p className="text-muted-foreground leading-relaxed mb-2">
+          Epsilon-greedy стратегию мы разобрали в{" "}
+          <CrossLinkToHub hubPath="/courses/1-6" hubTitle="Урок 1.3 — Q-Learning: табличный метод">
+            уроке 1.3
+          </CrossLinkToHub>
+          . Здесь она работает так же — ε экспоненциально затухает от 1.0 до 0.01.
         </p>
 
-        <CyberCodeBlock language="python" filename="value_iteration.py">
-          {`import numpy as np
+        <CyberCodeBlock language="python" filename="dqn_agent.py">
+          {`import torch
+import torch.nn as nn
+import torch.optim as optim
+import gymnasium as gym
+import numpy as np
+import random
+from collections import deque, namedtuple
 
-# ── Конфигурация gridworld 4x4 ──
-# .  .  .  G      G = цель    (+1)
-# .  #  .  .      # = стена
-# .  .  .  .
-# S  .  .  X      S = старт,  X = обрыв (-1)
-N, M = 4, 4
-GOAL, TRAP, WALL = (0, 3), (3, 3), (1, 1)
-ACTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]   # up, down, left, right
-GAMMA = 0.9
-THETA = 1e-4  # критерий остановки
+# ── Гиперпараметры ──
+LR = 1e-3
+GAMMA = 0.99
+EPS_START = 1.0
+EPS_END = 0.01
+EPS_DECAY = 0.995
+EPISODES = 600
+BATCH_SIZE = 64
+MEMORY_SIZE = 100000
+TARGET_UPDATE = 10  # Обновление target-сети каждые N эпизодов
+SEED = 42
 
-def is_terminal(s):
-    return s == GOAL or s == TRAP
+# ── Воспроизводимость ──
+random.seed(SEED)
+np.random.seed(SEED)
+torch.manual_seed(SEED)
 
-def step(s, a):
-    """Детерминированный переход. Возврат (s', r, done)."""
-    if is_terminal(s):
-        return s, 0.0, True
-    ni, nj = s[0] + ACTIONS[a][0], s[1] + ACTIONS[a][1]
-    # выход за границы / стена — остаёмся на месте
-    if not (0 <= ni < N and 0 <= nj < M) or (ni, nj) == WALL:
-        ni, nj = s
-    ns = (ni, nj)
-    if ns == GOAL:  return ns, 1.0, True
-    if ns == TRAP:  return ns, -1.0, True
-    return ns, -0.04, False  # маленький штраф за шаг
+# ── Replay Buffer ──
+Transition = namedtuple('Transition',
+    ('state', 'action', 'reward', 'next_state', 'done'))
 
-# ── Value Iteration ──
-V = np.zeros((N, M))
-for it in range(1000):
-    delta = 0.0
-    new_V = V.copy()
-    for i in range(N):
-        for j in range(M):
-            s = (i, j)
-            if is_terminal(s) or s == WALL:
-                continue
-            # Беллман оптимальности: V(s) = max_a [ r + γ · V(s') ]
-            q_values = []
-            for a in range(4):
-                ns, r, done = step(s, a)
-                q_values.append(r + (0 if done else GAMMA * V[ns]))
-            new_V[i, j] = max(q_values)
-            delta = max(delta, abs(new_V[i, j] - V[i, j]))
-    V = new_V
-    if delta < THETA:
-        print(f"Сошлось за {it + 1} итераций")
-        break
+class ReplayBuffer:
+    def __init__(self, capacity):
+        self.buffer = deque(maxlen=capacity)
 
-# ── Извлекаем оптимальную политику ──
-policy = np.full((N, M), ' ', dtype='<U2')
-arrows = ['↑', '↓', '←', '→']
-for i in range(N):
-    for j in range(M):
-        s = (i, j)
-        if s == GOAL:  policy[i, j] = 'G'
-        elif s == TRAP: policy[i, j] = 'X'
-        elif s == WALL: policy[i, j] = '#'
+    def push(self, *args):
+        self.buffer.append(Transition(*args))
+
+    def sample(self, batch_size):
+        batch = random.sample(self.buffer, batch_size)
+        return Transition(*zip(*batch))
+
+    def __len__(self):
+        return len(self.buffer)
+
+# ── Q-Network ──
+class DQN(nn.Module):
+    def __init__(self, obs_dim=4, n_actions=2):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(obs_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 128),
+            nn.ReLU(),
+            nn.Linear(128, n_actions)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+# ── Инициализация ──
+env = gym.make("CartPole-v1")
+policy_net = DQN()
+target_net = DQN()
+target_net.load_state_dict(policy_net.state_dict())
+target_net.eval()
+
+optimizer = optim.Adam(policy_net.parameters(), lr=LR)
+memory = ReplayBuffer(MEMORY_SIZE)
+epsilon = EPS_START
+rewards_history = []
+
+# ── Цикл обучения ──
+for episode in range(EPISODES):
+    state, _ = env.reset(seed=SEED + episode)
+    total_reward = 0
+
+    while True:
+        # Epsilon-greedy
+        if random.random() < epsilon:
+            action = env.action_space.sample()
         else:
-            q = [step(s, a)[1] + (0 if step(s, a)[2] else GAMMA * V[step(s, a)[0]])
-                 for a in range(4)]
-            policy[i, j] = arrows[int(np.argmax(q))]
+            with torch.no_grad():
+                action = policy_net(torch.FloatTensor(state)).argmax().item()
 
-print("V* =")
-print(np.round(V, 2))
-print("π* =")
-for row in policy:
-    print(' '.join(row))`}
+        next_state, reward, term, trunc, _ = env.step(action)
+        done = term or trunc
+        memory.push(state, action, reward, next_state, done)
+        state = next_state
+        total_reward += reward
+
+        # Обучение
+        if len(memory) >= BATCH_SIZE:
+            batch = memory.sample(BATCH_SIZE)
+
+            states = torch.FloatTensor(np.array(batch.state))
+            actions = torch.LongTensor(batch.action).unsqueeze(1)
+            rewards = torch.FloatTensor(batch.reward)
+            next_states = torch.FloatTensor(np.array(batch.next_state))
+            dones = torch.FloatTensor(batch.done)
+
+            # Q(s, a) из policy-сети
+            q_values = policy_net(states).gather(1, actions).squeeze()
+
+            # max Q(s', a') из target-сети (заморожена)
+            with torch.no_grad():
+                next_q = target_net(next_states).max(1)[0]
+                target = rewards + GAMMA * next_q * (1 - dones)
+
+            loss = nn.SmoothL1Loss()(q_values, target)
+            optimizer.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(policy_net.parameters(), 1.0)
+            optimizer.step()
+
+        if done:
+            break
+
+    epsilon = max(EPS_END, epsilon * EPS_DECAY)
+    rewards_history.append(total_reward)
+
+    # Обновление target-сети
+    if (episode + 1) % TARGET_UPDATE == 0:
+        target_net.load_state_dict(policy_net.state_dict())
+
+    if (episode + 1) % 50 == 0:
+        avg = np.mean(rewards_history[-50:])
+        print(f"Ep {episode+1} | Avg: {avg:.1f} | ε: {epsilon:.3f}")
+
+print(f"\\nФинальный средний reward (последние 100): "
+      f"{np.mean(rewards_history[-100:]):.1f}")`}
         </CyberCodeBlock>
 
-        <Card className="bg-card/40 border-border/40 mt-4">
-          <CardContent className="p-4">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-              Что ты увидишь в выводе
-            </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Значения V образуют «градиент» к цели: чем ближе к G, тем выше V. Политика π*
-              представляется стрелками, указывающими оптимальное действие в каждой клетке.
-              Обрати внимание: алгоритм обошёлся <strong className="text-foreground">без
-              нейросетей</strong> — чистая математика уравнений Беллмана.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* ── 10. Accordion-разборы ───────────── */}
-      <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4">Глубже в детали</h2>
-
-        <Accordion type="multiple" className="space-y-2">
+        {/* Code breakdowns */}
+        <Accordion type="multiple" className="mt-4 space-y-2">
           <AccordionItem
-            value="why-gamma"
+            value="two-nets"
             className="border-border/30 rounded-lg overflow-hidden bg-card/20"
           >
             <AccordionTrigger className="px-4 text-sm text-muted-foreground hover:text-foreground hover:no-underline">
               <span className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-primary" />
-                Почему γ обязательно &lt; 1 в непрерывных задачах?
+                Разбор: почему две сети?
               </span>
             </AccordionTrigger>
             <AccordionContent className="px-4">
               <p className="text-sm text-muted-foreground leading-relaxed mb-2">
-                Если <Math display={false}>{"\\gamma = 1"}</Math> и эпизод бесконечен, то сумма{" "}
-                <Math display={false}>{"G = r + r + r + \\dots"}</Math> может расходиться —{" "}
-                <Math display={false}>{"V(s)"}</Math> не определена. При{" "}
-                <Math display={false}>{"\\gamma < 1"}</Math> геометрический ряд сходится:
-              </p>
-              <Math>{"|G| \\leq r_{\\max} \\cdot (1 + \\gamma + \\gamma^2 + \\dots) = \\frac{r_{\\max}}{1 - \\gamma}"}</Math>
-              <Math>{"\\text{Эффективный горизонт} \\approx \\frac{1}{1 - \\gamma}, \\quad \\gamma = 0.99 \\;\\Rightarrow\\; {\\sim}\\,100 \\text{ шагов}"}</Math>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                Помимо сходимости, <Math display={false}>{"\\gamma"}</Math> отражает
-                предпочтение агента: «синица в руке важнее журавля в небе».
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem
-            value="exp-vs-opt"
-            className="border-border/30 rounded-lg overflow-hidden bg-card/20"
-          >
-            <AccordionTrigger className="px-4 text-sm text-muted-foreground hover:text-foreground hover:no-underline">
-              <span className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-primary" />
-                В чём разница уравнений Беллмана expectation и optimality?
-              </span>
-            </AccordionTrigger>
-            <AccordionContent className="px-4">
-              <p className="text-sm text-muted-foreground leading-relaxed mb-2">
-                <strong className="text-foreground">Expectation</strong> (для фиксированной
-                политики π): усреднение по{" "}
-                <Math display={false}>{"\\pi(a \\mid s)"}</Math> —{" "}
-                <Math display={false}>{"V^{\\pi}(s) = \\mathbb{E}_a[\\,\\dots\\,]"}</Math>.
-                Отвечает на вопрос: «насколько хороша данная политика?».
+                В уроке 1.6 мы использовали одну сеть и для предсказания Q(s,a), и для
+                вычисления target. Проблема: на каждом шаге target сдвигается вместе с
+                обучением — сеть «гоняется за собственным хвостом».
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                <strong className="text-foreground">Optimality</strong> (для лучшей возможной
-                политики): максимизация по действиям —{" "}
-                <Math display={false}>{"V^{*}(s) = \\max_a [\\,\\dots\\,]"}</Math>. Решает задачу
-                поиска лучшей политики. Замена{" "}
-                <Math display={false}>{"\\sum_a \\pi"}</Math> на{" "}
-                <Math display={false}>{"\\max_a"}</Math> — и есть вся разница.
+                <strong className="text-foreground">Target Network</strong> решает это:
+                target-сеть «заморожена» и обновляется только каждые{" "}
+                <code className="text-primary text-xs">TARGET_UPDATE</code> эпизодов. Это
+                даёт стабильную цель для оптимизации.
               </p>
             </AccordionContent>
           </AccordionItem>
-
           <AccordionItem
-            value="markov-in-real"
+            value="gather"
             className="border-border/30 rounded-lg overflow-hidden bg-card/20"
           >
             <AccordionTrigger className="px-4 text-sm text-muted-foreground hover:text-foreground hover:no-underline">
               <span className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-primary" />
-                Что делать, если свойство Маркова не выполнено?
+                Разбор: что делает .gather(1, actions)?
               </span>
             </AccordionTrigger>
             <AccordionContent className="px-4">
               <p className="text-sm text-muted-foreground leading-relaxed mb-2">
-                В реальных задачах <em>одного кадра</em> часто недостаточно: по статичному
-                снимку Pong нельзя определить направление мяча. Это — нарушение марковости.
-                Решения:
+                <code className="text-primary text-xs">policy_net(states)</code> возвращает
+                Q-значения для <strong className="text-foreground">всех</strong> действий:{" "}
+                <code className="text-primary text-xs">[[Q₀, Q₁], [Q₀, Q₁], ...]</code>
               </p>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                <li>
-                  Склеивать несколько кадров в состояние (frame stacking в оригинальном DQN).
-                </li>
-                <li>
-                  Использовать <strong className="text-foreground">рекуррентные сети</strong>{" "}
-                  (LSTM, GRU) — они хранят скрытое состояние.
-                </li>
-                <li>
-                  Формально переходить в <strong className="text-foreground">POMDP</strong> —
-                  Partially Observable MDP, где различают наблюдения o и скрытое состояние s.
-                </li>
-              </ul>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <code className="text-primary text-xs">.gather(1, actions)</code> извлекает
+                Q-значение только для того действия, которое агент действительно совершил.
+                Это эквивалент{" "}
+                <code className="text-primary text-xs">Q[i, actions[i]]</code> для каждого
+                элемента батча.
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem
+            value="bellman"
+            className="border-border/30 rounded-lg overflow-hidden bg-card/20"
+          >
+            <AccordionTrigger className="px-4 text-sm text-muted-foreground hover:text-foreground hover:no-underline">
+              <span className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-primary" />
+                Разбор: формула target = r + γ·max Q(s',a')
+              </span>
+            </AccordionTrigger>
+            <AccordionContent className="px-4">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                Это{" "}
+                <CrossLinkToHub
+                  hubPath="/math-rl/module-5"
+                  hubAnchor="глава-5"
+                  hubTitle="Математика RL — Глава 5. Уравнения Беллмана"
+                >
+                  уравнение Беллмана
+                </CrossLinkToHub>
+                : оптимальное Q-значение = немедленная награда + дисконтированная лучшая
+                будущая награда.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                <code className="text-primary text-xs">(1 - dones)</code> обнуляет будущую
+                награду для терминальных состояний. Если эпизод окончен — будущего нет,
+                Q = только текущая награда.
+              </p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       </section>
 
-      {/* ── 11. Связь с Q-Learning/DQN и cross-links ───────────── */}
+      {/* ── 7. Convergence graph ── */}
       <section>
-        <h2 className="text-2xl font-bold text-foreground mb-4">Что делать дальше?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <Card className="bg-card/40 border-primary/30">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-primary">Следующий шаг — Q-Learning</h3>
-              <p className="text-xs text-muted-foreground">
-                В{" "}
-                <CrossLinkToHub hubPath="/courses/1-6" hubTitle="Урок 1.6 — Q-Learning">
-                  уроке 1.6
-                </CrossLinkToHub>{" "}
-                мы превратим уравнение Беллмана оптимальности для Q в алгоритм, который
-                учится без знания T и R.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-secondary/30">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-secondary">Глубже в математику</h3>
-              <p className="text-xs text-muted-foreground">
-                Полноценные доказательства, сходимость, следы пригодности —{" "}
-                <CrossLinkToHub
-                  hubPath="/math-rl/module-5"
-                  hubTitle="Математика RL — MDP, Bellman, Model-Free"
-                >
-                  математический модуль
-                </CrossLinkToHub>
-                .
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-accent/30">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-accent">Практика на дискретной среде</h3>
-              <p className="text-xs text-muted-foreground">
-                Попробуй Value Iteration на настоящем gridworld —{" "}
-                <CrossLinkToHub
-                  hubPath="/projects/frozen-lake"
-                  hubTitle="Проект FrozenLake"
-                >
-                  FrozenLake
-                </CrossLinkToHub>
-                .
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="bg-card/40 border-border/40">
-            <CardContent className="p-4 space-y-2">
-              <h3 className="font-bold text-sm text-foreground">Вернуться к коду DQN</h3>
-              <p className="text-xs text-muted-foreground">
-                Перечитай код{" "}
-                <CrossLinkToHub hubPath="/courses/1-4" hubTitle="Урок 1.4 — DQN">
-                  DQN из урока 1.4
-                </CrossLinkToHub>{" "}
-                — теперь формула{" "}
-                <Math display={false}>{"r + \\gamma \\cdot \\max_{a'} Q(s', a')"}</Math>{" "}
-                должна стать очевидной.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        <h2 className="text-2xl font-bold text-foreground mb-4">График сходимости</h2>
+
+        <CyberCodeBlock language="python" filename="plot_convergence.py">
+          {`import matplotlib.pyplot as plt
+
+window = 50
+avg_rewards = [np.mean(rewards_history[max(0,i-window):i+1])
+               for i in range(len(rewards_history))]
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+# Reward
+ax1.plot(rewards_history, alpha=0.2, color='cyan')
+ax1.plot(avg_rewards, color='magenta', linewidth=2)
+ax1.axhline(y=475, color='lime', linestyle='--', alpha=0.7)
+ax1.set_xlabel('Эпизод')
+ax1.set_ylabel('Reward')
+ax1.set_title('DQN: Reward vs Episodes')
+ax1.legend(['Raw', f'Avg-{window}', 'Target=475'])
+
+# Epsilon
+eps_vals = [max(EPS_END, EPS_START * EPS_DECAY**i) for i in range(EPISODES)]
+ax2.plot(eps_vals, color='cyan')
+ax2.set_xlabel('Эпизод')
+ax2.set_ylabel('Epsilon')
+ax2.set_title('Epsilon Decay')
+
+plt.tight_layout()
+plt.show()`}
+        </CyberCodeBlock>
       </section>
 
-      {/* ── 12. Резюме ───────────── */}
+      {/* ── 8. Save / load model ── */}
+      <section>
+        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
+          <Save className="w-6 h-6 text-green-400" />
+          Сохранение и загрузка модели
+        </h2>
+        <p className="text-muted-foreground leading-relaxed mb-4">
+          После обучения важно сохранить веса модели — чтобы не обучать заново, а также для
+          использования в{" "}
+          <CrossLinkToHub
+            hubPath="/pytorch/cheatsheet"
+            hubAnchor="saving"
+            hubTitle="PyTorch — Сохранение"
+          >
+            других проектах
+          </CrossLinkToHub>
+          .
+        </p>
+
+        <CyberCodeBlock language="python" filename="save_load.py">
+          {`# ── Сохранение обученной модели ──
+torch.save({
+    'model_state_dict': policy_net.state_dict(),
+    'optimizer_state_dict': optimizer.state_dict(),
+    'epsilon': epsilon,
+    'rewards_history': rewards_history,
+}, 'dqn_cartpole.pth')
+print("Модель сохранена!")
+
+# ── Загрузка модели ──
+checkpoint = torch.load('dqn_cartpole.pth')
+policy_net.load_state_dict(checkpoint['model_state_dict'])
+policy_net.eval()
+
+# Тестирование загруженной модели
+env = gym.make("CartPole-v1", render_mode="human")
+state, _ = env.reset()
+total = 0
+while True:
+    with torch.no_grad():
+        action = policy_net(torch.FloatTensor(state)).argmax().item()
+    state, reward, term, trunc, _ = env.step(action)
+    total += reward
+    if term or trunc:
+        break
+print(f"Тестовый reward: {total}")
+env.close()`}
+        </CyberCodeBlock>
+
+        <Card className="bg-card/40 border-primary/20 mt-4">
+          <CardContent className="p-4 flex gap-3 items-start">
+            <Lightbulb className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground">
+              <strong className="text-foreground">Совет:</strong> сохраняйте не только веса
+              модели, но и оптимизатор и историю наград — это позволит продолжить обучение с
+              того же места. Параметр{" "}
+              <code className="text-primary">render_mode="human"</code> включает визуализацию
+              среды при тестировании.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* ── 9. Summary ── */}
       <section>
         <Card className="bg-gradient-to-br from-primary/5 via-card/40 to-secondary/5 border-primary/20">
           <CardContent className="p-6">
@@ -1009,11 +738,11 @@ for row in policy:
             </h2>
             <div className="space-y-3">
               {[
-                "MDP = (S, A, T, R, γ) — универсальный язык для описания любой RL-задачи",
-                "Возврат G_t = Σ γᵏ·r — дисконтированная сумма будущих наград; γ < 1 гарантирует сходимость",
-                "V^π(s) оценивает состояние, Q^π(s,a) — пару состояние-действие; связаны через V^π(s) = Σ π(a|s)·Q^π(s,a)",
-                "Уравнения Беллмана задают рекурсию: ценность = награда + γ · ценность(следующее)",
-                "π*(s) = argmax_a Q*(s,a) — именно поэтому все RL-алгоритмы учат Q-функцию",
+                "DQN (DeepMind, 2015) — первый алгоритм deep RL, достигший уровня человека в Atari",
+                "Target Network стабилизирует обучение, «замораживая» target-значения на N эпизодов",
+                "Experience Replay разрушает корреляции и позволяет переиспользовать опыт",
+                "Huber Loss + gradient clipping защищают от выбросов и взрывающихся градиентов",
+                "torch.save / torch.load — сохранение и загрузка обученной модели",
               ].map((point, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className="text-primary font-bold text-sm mt-0.5">{i + 1}.</span>
@@ -1024,23 +753,24 @@ for row in policy:
             <div className="mt-4 p-3 rounded-lg bg-primary/5 border border-primary/20">
               <p className="text-sm text-foreground font-medium flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-primary" />
-                Теперь у тебя есть весь математический аппарат, чтобы в уроке 1.6 вывести
-                Q-Learning из первых принципов — без магии.
+                Следующий шаг — Проект 1: применить DQN для задачи балансировки шеста и
+                закрепить все навыки Уровня 1!
               </p>
             </div>
           </CardContent>
         </Card>
       </section>
 
-      {/* ── 13. Quiz ───────────── */}
+      {/* ── 10. Quiz ── */}
       <Quiz
-        title="Проверь себя: MDP и Беллман"
+        title="Проверь себя: DQN"
         questions={quizQuestions}
-        lessonPath="/courses/1-5"
-        nextLesson={{ path: "/courses/1-7", title: "Exploration vs Exploitation" }}
+        lessonPath="/courses/1-4"
+        nextLesson={{ path: "/courses/1-5", title: "MDP" }}
       />
+
     </LessonLayout>
   );
 };
 
-export default CourseLesson1_5;
+export default CourseLesson1_4;
