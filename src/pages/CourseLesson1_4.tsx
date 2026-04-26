@@ -74,13 +74,13 @@ const quizQuestions = [
 const CourseLesson1_3 = () => {
   return (
     <LessonLayout
-      lessonId="1-3"
+      lessonId="1-4"
       lessonTitle="CartPole — твой первый RL-агент"
-      lessonNumber="1.3"
+      lessonNumber="1.4"
       duration="35 мин"
       tags={["#code", "#pytorch", "#gym"]}
-      prevLesson={{ path: "/courses/1-6", title: "Q-Learning: табличный метод" }}
-      nextLesson={{ path: "/courses/1-4", title: "DQN с нуля" }}
+      prevLesson={{ path: "/courses/1-3", title: "Q-Learning: табличный метод" }}
+      nextLesson={{ path: "/courses/1-5", title: "DQN с нуля" }}
       keyConcepts={[
         "Gymnasium — стандартная библиотека RL-сред",
         "CartPole: наблюдения, действия, награды, конец эпизода",
@@ -792,10 +792,10 @@ plt.show()`}
       <Quiz
         title="Проверь себя: CartPole"
         questions={quizQuestions}
-        nextLesson={{ path: "/courses/1-4", title: "DQN с нуля" }}
+        nextLesson={{ path: "/courses/1-5", title: "DQN с нуля" }}
       />
     </LessonLayout>
   );
 };
 
-export default CourseLesson1_3;
+export default CourseLesson1_4;

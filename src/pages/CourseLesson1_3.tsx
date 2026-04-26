@@ -1,15 +1,15 @@
 import LessonLayout from "@/components/LessonLayout";
 
-const CourseLesson1_6 = () => (
+const CourseLesson1_3 = () => (
   <LessonLayout
     lessonTitle="Q-Learning: табличный метод"
-    lessonNumber="1.6"
+    lessonNumber="1.3"
     duration="30 мин"
     tags={["algorithm", "tabular"]}
     level={1}
-    lessonId="1-6"
+    lessonId="1-3"
     prevLesson={{ path: "/courses/1-2", title: "Установка окружения" }}
-    nextLesson={{ path: "/courses/1-3", title: "CartPole" }}
+    nextLesson={{ path: "/courses/1-4", title: "CartPole" }}
   >
     <section>
       <h2 className="text-2xl font-bold text-foreground mb-4">🚧 Урок в разработке</h2>
@@ -21,4 +21,4 @@ const CourseLesson1_6 = () => (
   </LessonLayout>
 );
 
-export default CourseLesson1_6;
+export default CourseLesson1_3;

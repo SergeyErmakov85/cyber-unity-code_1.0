@@ -93,13 +93,13 @@ const quizQuestions = [
 const CourseLesson1_4 = () => {
   return (
     <LessonLayout
-      lessonId="1-4"
+      lessonId="1-5"
       lessonTitle="DQN с нуля на PyTorch"
-      lessonNumber="1.4"
+      lessonNumber="1.5"
       duration="45 мин"
       tags={["#code", "#pytorch", "#dqn", "#deep"]}
-      prevLesson={{ path: "/courses/1-3", title: "CartPole агент" }}
-      nextLesson={{ path: "/courses/1-5", title: "MDP" }}
+      prevLesson={{ path: "/courses/1-4", title: "CartPole агент" }}
+      nextLesson={{ path: "/courses/1-6", title: "MDP" }}
       keyConcepts={[
         "DQN — первый deep RL алгоритм (DeepMind, 2015)",
         "Target Network — стабилизация обучения",
@@ -409,7 +409,7 @@ optimizer.step()`}
         </h2>
         <p className="text-muted-foreground leading-relaxed mb-2">
           Epsilon-greedy стратегию мы разобрали в{" "}
-          <CrossLinkToHub hubPath="/courses/1-6" hubTitle="Урок 1.3 — Q-Learning: табличный метод">
+          <CrossLinkToHub hubPath="/courses/1-3" hubTitle="Урок 1.3 — Q-Learning: табличный метод">
             уроке 1.3
           </CrossLinkToHub>
           . Здесь она работает так же — ε экспоненциально затухает от 1.0 до 0.01.
@@ -765,12 +765,12 @@ env.close()`}
       <Quiz
         title="Проверь себя: DQN"
         questions={quizQuestions}
-        lessonPath="/courses/1-4"
-        nextLesson={{ path: "/courses/1-5", title: "MDP" }}
+        lessonPath="/courses/1-5"
+        nextLesson={{ path: "/courses/1-6", title: "MDP" }}
       />
 
     </LessonLayout>
   );
 };
 
-export default CourseLesson1_4;
+export default CourseLesson1_5;
