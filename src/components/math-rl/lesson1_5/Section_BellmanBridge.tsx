@@ -359,7 +359,7 @@ const Section_BellmanBridge = () => {
           </p>
 
           <Link
-            to="/courses/1-6"
+            to="/courses/1-3"
             style={{
               alignSelf: "flex-start",
               display: "inline-flex",

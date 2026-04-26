@@ -118,7 +118,7 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
       lessons: [
         { title: "Основы Reinforcement Learning", path: "/courses/1-1" },
         { title: "Установка PyTorch + Unity", path: "/courses/1-2" },
-        { title: "Первый агент: CartPole", path: "/courses/1-3" },
+        { title: "Первый агент: CartPole", path: "/courses/1-4" },
       ],
     };
   }
@@ -131,7 +131,7 @@ function getRecommendation(answers: Record<string, string>): Recommendation {
     firstStepPath: "/courses/1-1",
     lessons: [
       { title: "Основы Reinforcement Learning", path: "/courses/1-1" },
-      { title: "Базовый DQN", path: "/courses/1-4" },
+      { title: "Базовый DQN", path: "/courses/1-5" },
       { title: "Policy Gradient (REINFORCE)", path: "/courses/2-1" },
     ],
   };

@@ -8,7 +8,7 @@ const CourseLesson1_7 = () => (
     tags={["theory", "strategy"]}
     level={1}
     lessonId="1-7"
-    prevLesson={{ path: "/courses/1-5", title: "MDP" }}
+    prevLesson={{ path: "/courses/1-6", title: "MDP" }}
     nextLesson={{ path: "/courses/project-1", title: "Проект: Балансировка шеста" }}
   >
     <section>

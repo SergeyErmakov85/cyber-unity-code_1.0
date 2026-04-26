@@ -13,7 +13,7 @@ const CourseProject1 = () => {
       lessonNumber="П1"
       duration="60–90 мин"
       tags={["#project", "#dqn", "#pytorch"]}
-      prevLesson={{ path: "/courses/1-4", title: "DQN с нуля" }}
+      prevLesson={{ path: "/courses/1-7", title: "Exploration vs Exploitation" }}
     >
       {/* Mission */}
       <section>

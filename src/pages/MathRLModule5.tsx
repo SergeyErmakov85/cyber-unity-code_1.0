@@ -79,7 +79,7 @@ const MathRLModule5 = () => {
             обучения с подкреплением
           </h2>
           <p className="text-muted-foreground mb-8 text-lg">
-            Исчерпывающий модуль: от теории вероятностей до Actor-Critic. Ключевые связи: Bellman в DQN — <CrossLinkToLesson lessonId="1-4" lessonPath="/courses/1-4" lessonTitle="DQN с нуля на PyTorch" lessonLevel={1} />, GAE в PPO — <CrossLinkToLesson lessonId="2-2" lessonPath="/courses/2-2" lessonTitle="PPO — Proximal Policy Optimization" lessonLevel={2} />, entropy в SAC — <CrossLinkToLesson lessonId="3-1" lessonPath="/courses/3-1" lessonTitle="SAC — Soft Actor-Critic" lessonLevel={3} />, дисконтирование — <CrossLinkToLesson lessonId="1-1" lessonPath="/courses/1-1" lessonTitle="Что такое обучение с подкреплением?" lessonLevel={1} />.
+            Исчерпывающий модуль: от теории вероятностей до Actor-Critic. Ключевые связи: Bellman в DQN — <CrossLinkToLesson lessonId="1-5" lessonPath="/courses/1-5" lessonTitle="DQN с нуля на PyTorch" lessonLevel={1} />, GAE в PPO — <CrossLinkToLesson lessonId="2-2" lessonPath="/courses/2-2" lessonTitle="PPO — Proximal Policy Optimization" lessonLevel={2} />, entropy в SAC — <CrossLinkToLesson lessonId="3-1" lessonPath="/courses/3-1" lessonTitle="SAC — Soft Actor-Critic" lessonLevel={3} />, дисконтирование — <CrossLinkToLesson lessonId="1-1" lessonPath="/courses/1-1" lessonTitle="Что такое обучение с подкреплением?" lessonLevel={1} />.
           </p>
           <HubLessonBadges hubPath="/math-rl/module-5" />
 

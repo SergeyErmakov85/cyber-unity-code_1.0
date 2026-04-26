@@ -26,14 +26,14 @@ import Section_BellmanBridge from "@/components/math-rl/lesson1_5/Section_Bellma
 const Lesson1_5 = () => {
   return (
     <LessonLayout
-      lessonId="1-5"
-      lessonNumber="1.5"
+      lessonId="1-6"
+      lessonNumber="1.6"
       lessonTitle="Марковские процессы принятия решений"
       duration="35 мин"
       tags={["#theory", "#math", "#bellman"]}
       level={1}
-      prevLesson={{ path: "/courses/1-4", title: "DQN с нуля на PyTorch" }}
-      nextLesson={{ path: "/courses/1-6", title: "Q-Learning: табличный метод" }}
+      prevLesson={{ path: "/courses/1-5", title: "DQN с нуля на PyTorch" }}
+      nextLesson={{ path: "/courses/1-7", title: "Exploration vs Exploitation" }}
     >
       <Section_Intro />
       {/* промпт 3 — Intro */}

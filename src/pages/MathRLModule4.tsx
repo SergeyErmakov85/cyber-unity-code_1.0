@@ -119,7 +119,7 @@ const MathRLModule4 = () => {
 
           <h3 className="text-xl font-semibold text-foreground mt-8 mb-3">3. Adam (Adaptive Moment Estimation)</h3>
           <p>
-            Комбинирует моменты первого и второго порядка (Momentum + RMSProp) (Adam в DQN — <CrossLinkToLesson lessonId="1-4" lessonPath="/courses/1-4" lessonTitle="DQN с нуля на PyTorch" lessonLevel={1} />). Параметры по умолчанию: <Math display={false}>{`\\beta_1 = 0.9`}</Math>, <Math display={false}>{`\\beta_2 = 0.999`}</Math>, <Math display={false}>{`\\varepsilon = 10^{-8}`}</Math>.
+            Комбинирует моменты первого и второго порядка (Momentum + RMSProp) (Adam в DQN — <CrossLinkToLesson lessonId="1-5" lessonPath="/courses/1-5" lessonTitle="DQN с нуля на PyTorch" lessonLevel={1} />). Параметры по умолчанию: <Math display={false}>{`\\beta_1 = 0.9`}</Math>, <Math display={false}>{`\\beta_2 = 0.999`}</Math>, <Math display={false}>{`\\varepsilon = 10^{-8}`}</Math>.
           </p>
 
           <InfoBox color="accent" title="Unity ML-Agents">
