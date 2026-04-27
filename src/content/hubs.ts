@@ -19,7 +19,7 @@ export const SUPPORT_HUBS: Record<HubId, SupportHub> = {
     slug: "pytorch",
     shortDescription: "Основы тензоров, autograd, нейросетей и оптимизации в PyTorch.",
     icon: Brain,
-    colorAccent: "text-orange-400",
+    colorAccent: "text-primary",
   },
   "unity-ml-agents": {
     id: "unity-ml-agents",
@@ -27,7 +27,7 @@ export const SUPPORT_HUBS: Record<HubId, SupportHub> = {
     slug: "unity-ml-agents",
     shortDescription: "Установка, настройка среды, сенсоры и тренировка агентов в Unity.",
     icon: Box,
-    colorAccent: "text-emerald-400",
+    colorAccent: "text-secondary",
   },
   "deep-rl": {
     id: "deep-rl",
@@ -35,7 +35,7 @@ export const SUPPORT_HUBS: Record<HubId, SupportHub> = {
     slug: "deep-rl",
     shortDescription: "Глубокое обучение с подкреплением: DQN, Policy Gradient, Actor-Critic.",
     icon: BookOpen,
-    colorAccent: "text-sky-400",
+    colorAccent: "text-accent",
   },
   project: {
     id: "project",
@@ -43,7 +43,7 @@ export const SUPPORT_HUBS: Record<HubId, SupportHub> = {
     slug: "project",
     shortDescription: "Практические проекты: от CartPole до мультиагентного футбола.",
     icon: FolderGit2,
-    colorAccent: "text-violet-400",
+    colorAccent: "text-secondary",
   },
   "math-rl": {
     id: "math-rl",
@@ -51,7 +51,7 @@ export const SUPPORT_HUBS: Record<HubId, SupportHub> = {
     slug: "math-rl",
     shortDescription: "Вероятности, MDP, уравнения Беллмана, градиенты политик.",
     icon: Sigma,
-    colorAccent: "text-amber-400",
+    colorAccent: "text-accent",
   },
   "fca-rl": {
     id: "fca-rl",
