@@ -73,9 +73,9 @@ const FeaturesSection = () => {
   const [active, setActive] = useState<number | null>(null);
 
   const CenterIcon = centerFeature.icon;
-  const circleSize = 260;
-  const centerSize = 160;
-  const orbitRadius = 165;
+  const circleSize = 390;
+  const centerSize = 240;
+  const orbitRadius = 248;
 
   return (
     <section id="features" className="py-20 px-4 relative">
@@ -96,7 +96,7 @@ const FeaturesSection = () => {
 
         {/* Desktop: Flower layout */}
         <div className="hidden sm:flex justify-center">
-          <div className="relative" style={{ width: 640, height: 600 }}>
+          <div className="relative" style={{ width: 960, height: 900 }}>
             {features.map((feature, index) => {
               const Icon = feature.icon;
               const pos = getCirclePosition(index, orbitRadius);
@@ -133,14 +133,14 @@ const FeaturesSection = () => {
                     }}
                   >
                     <Icon
-                      className="w-8 h-8 mb-2 transition-all duration-300"
+                      className="w-12 h-12 mb-3 transition-all duration-300"
                       style={{
                         color: `hsl(${feature.hsl})`,
                         filter: isActive ? `drop-shadow(0 0 10px hsla(${feature.hsl}, 0.7))` : "none",
                       }}
                     />
                     <span
-                      className="text-sm font-bold"
+                      className="text-lg font-bold"
                       style={{ color: `hsl(${feature.hsl})` }}
                     >
                       {feature.title}
@@ -203,13 +203,13 @@ const FeaturesSection = () => {
                 }}
               >
                 <CenterIcon
-                  className="w-7 h-7 mb-1"
+                  className="w-11 h-11 mb-2"
                   style={{
                     color: `hsl(${centerFeature.hsl})`,
                     filter: active === 6 ? `drop-shadow(0 0 10px hsla(${centerFeature.hsl}, 0.7))` : "none",
                   }}
                 />
-                <span className="text-xs font-bold" style={{ color: `hsl(${centerFeature.hsl})` }}>
+                <span className="text-base font-bold" style={{ color: `hsl(${centerFeature.hsl})` }}>
                   {centerFeature.title}
                 </span>
               </div>
