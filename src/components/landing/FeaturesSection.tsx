@@ -73,9 +73,9 @@ const FeaturesSection = () => {
   const [active, setActive] = useState<number | null>(null);
 
   const CenterIcon = centerFeature.icon;
-  const circleSize = 260;
-  const centerSize = 160;
-  const orbitRadius = 165;
+  const circleSize = 390;
+  const centerSize = 240;
+  const orbitRadius = 248;
 
   return (
     <section id="features" className="py-20 px-4 relative">
