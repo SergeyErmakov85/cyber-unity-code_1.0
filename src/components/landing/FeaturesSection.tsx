@@ -203,13 +203,13 @@ const FeaturesSection = () => {
                 }}
               >
                 <CenterIcon
-                  className="w-7 h-7 mb-1"
+                  className="w-11 h-11 mb-2"
                   style={{
                     color: `hsl(${centerFeature.hsl})`,
                     filter: active === 6 ? `drop-shadow(0 0 10px hsla(${centerFeature.hsl}, 0.7))` : "none",
                   }}
                 />
-                <span className="text-xs font-bold" style={{ color: `hsl(${centerFeature.hsl})` }}>
+                <span className="text-base font-bold" style={{ color: `hsl(${centerFeature.hsl})` }}>
                   {centerFeature.title}
                 </span>
               </div>
