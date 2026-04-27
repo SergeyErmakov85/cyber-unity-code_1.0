@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import gamepadImg from "@/assets/gamepad-hero.png";
-import { Shapes } from "lucide-react";
+import { Microscope } from "lucide-react";
 import NeuralNetworkViz from "./NeuralNetworkViz";
 
 const HeroSection = () => {
@@ -107,11 +107,11 @@ const HeroSection = () => {
               </span>
             ))}
             <button
-              onClick={() => navigate("/fca-rl")}
-              className="bg-card/50 border border-primary/30 text-xs px-3 py-1 rounded-full text-muted-foreground hover:text-foreground hover:border-primary/60 transition-colors flex items-center gap-1.5 cursor-pointer"
+              onClick={() => navigate("/hub/research")}
+              className="bg-card/50 border border-yellow-400/40 text-xs px-3 py-1 rounded-full text-yellow-300 hover:text-yellow-200 hover:border-yellow-400/70 hover:shadow-glow-yellow transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Shapes className="w-3 h-3" />
-              FCA + RL
+              <Microscope className="w-3 h-3" />
+              Исследования RL
             </button>
           </div>
         </div>
