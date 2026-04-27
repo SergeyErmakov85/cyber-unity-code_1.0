@@ -4,7 +4,7 @@ import FooterSection from "@/components/landing/FooterSection";
 import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Apple, Snowflake } from "lucide-react";
+import { ArrowLeft, ArrowRight, Apple, Snowflake, Network } from "lucide-react";
 
 interface ProjectEntry {
   id: string;
