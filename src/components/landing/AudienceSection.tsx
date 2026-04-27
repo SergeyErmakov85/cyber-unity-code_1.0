@@ -170,15 +170,15 @@ const AudienceSection = () => {
 
                   {/* Content */}
                   <div className={`absolute ${contentPosition[a.position]} max-w-[200px] lg:max-w-[220px] z-10`}>
-                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${c.bg} border ${c.border} mb-3 ${a.position === 'right' ? 'ml-auto' : a.position === 'left' ? '' : 'mx-auto'}`}>
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${c.bg} border ${c.border} mb-3 mx-auto`}>
                       <Icon className={`w-6 h-6 ${c.text}`} />
                     </div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-lg font-bold text-foreground text-center px-[44px]">{a.title}</h3>
-                      {a.isPrimary && <Star className="w-3.5 h-3.5 text-primary fill-primary flex-shrink-0 px-0 mx-0 my-0" />}
+                    <div className="flex items-center gap-2 mb-1 justify-center">
+                      <h3 className="text-lg font-bold text-foreground text-center">{a.title}</h3>
+                      {a.isPrimary && <Star className="w-3.5 h-3.5 text-primary fill-primary flex-shrink-0" />}
                     </div>
-                    <p className="text-muted-foreground text-xs leading-relaxed mb-2">{a.description}</p>
-                    <div className={`flex flex-wrap gap-1.5 ${a.position === 'right' ? 'justify-end' : a.position === 'left' ? 'justify-start' : 'justify-center'}`}>
+                    <p className="text-muted-foreground text-xs leading-relaxed mb-2 text-center">{a.description}</p>
+                    <div className="flex flex-wrap gap-1.5 justify-center">
                       {a.benefits.map((b, bi) => (
                         <span key={bi} className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${c.bg} ${c.text} border ${c.border}`}>
                           {b}
