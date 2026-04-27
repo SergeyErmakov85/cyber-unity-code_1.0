@@ -164,8 +164,8 @@ const LearningPathSection = () => {
           </div>
 
           {/* Legend */}
-          <div className="mt-28 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground relative z-20">
-            <span className="flex items-center gap-1.5"><Info className="w-3.5 h-3.5" /> Цветные точки — хабы поддержки:</span>
+          <div className="mt-28 flex flex-wrap items-center justify-center gap-5 text-sm text-muted-foreground relative z-20">
+            <span className="flex items-center gap-1.5"><Info className="w-4 h-4" /> Цветные точки — хабы поддержки:</span>
             {(Object.keys(SUPPORT_HUBS) as HubId[]).map((hId) => {
               const hub = SUPPORT_HUBS[hId];
               const colorMap: Record<string, string> = {
@@ -177,8 +177,8 @@ const LearningPathSection = () => {
                 "text-yellow-400": "hsl(48, 96%, 53%)",
               };
               return (
-                <span key={hId} className="flex items-center gap-1">
-                  <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: colorMap[hub.colorAccent] ?? "hsl(var(--primary))" }} />
+                <span key={hId} className="flex items-center gap-1.5">
+                  <span className="inline-block w-4 h-4 rounded-full" style={{ backgroundColor: colorMap[hub.colorAccent] ?? "hsl(var(--primary))" }} />
                   {hub.label}
                 </span>
               );
