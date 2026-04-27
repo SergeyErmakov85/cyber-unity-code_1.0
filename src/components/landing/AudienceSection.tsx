@@ -113,17 +113,17 @@ const AudienceSection = () => {
                 key={i}
                 className={`relative bg-card/60 backdrop-blur-sm border ${c.border} rounded-xl p-5 ${c.glow} transition-all duration-300`}
               >
-                {a.isPrimary && (
-                  <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 border border-primary/30">
-                    <Star className="w-3 h-3 text-primary fill-primary" />
-                    <span className="text-[10px] font-medium text-primary">ЦА</span>
-                  </div>
-                )}
-                <div className="flex flex-col items-center text-center mb-2">
-                  <div className={`w-10 h-10 rounded-lg ${c.bg} flex items-center justify-center mb-2`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className={`w-10 h-10 rounded-lg ${c.bg} flex items-center justify-center`}>
                     <Icon className={`w-5 h-5 ${c.text}`} />
                   </div>
                   <h3 className="text-base font-bold text-foreground">{a.title}</h3>
+                  {a.isPrimary && (
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 border border-primary/30 ml-auto">
+                      <Star className="w-3 h-3 text-primary fill-primary" />
+                      <span className="text-[10px] font-medium text-primary">ЦА</span>
+                    </div>
+                  )}
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-3">{a.description}</p>
                 <div className="flex flex-wrap gap-1.5">
