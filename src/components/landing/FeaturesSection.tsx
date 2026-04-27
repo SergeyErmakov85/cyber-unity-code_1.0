@@ -96,7 +96,7 @@ const FeaturesSection = () => {
 
         {/* Desktop: Flower layout */}
         <div className="hidden sm:flex justify-center">
-          <div className="relative" style={{ width: 640, height: 600 }}>
+          <div className="relative" style={{ width: 960, height: 900 }}>
             {features.map((feature, index) => {
               const Icon = feature.icon;
               const pos = getCirclePosition(index, orbitRadius);
