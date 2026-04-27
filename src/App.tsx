@@ -33,6 +33,7 @@ const Visualizations = lazy(() => import("./pages/Visualizations"));
 const AdvancedTopics = lazy(() => import("./pages/AdvancedTopics"));
 const OnnxSentisGuide = lazy(() => import("./pages/OnnxSentisGuide"));
 const Labs = lazy(() => import("./pages/Labs"));
+const ResearchIndex = lazy(() => import("./pages/ResearchIndex"));
 const DemoProject = lazy(() => import("./pages/DemoProject"));
 const DeepRLModule = lazy(() => import("./pages/DeepRLModule"));
 const Courses = lazy(() => import("./pages/Courses"));
@@ -129,6 +130,7 @@ const App = () => (
             <Route path="/advanced" element={<AdvancedTopics />} />
             <Route path="/advanced/onnx-sentis" element={<OnnxSentisGuide />} />
             <Route path="/labs" element={<Labs />} />
+            <Route path="/hub/research" element={<ResearchIndex />} />
             <Route path="/demo-project" element={<DemoProject />} />
             <Route path="/deep-rl" element={<DeepRLModule />} />
             <Route path="/courses" element={<Courses />} />
