@@ -170,11 +170,6 @@ const Navbar = () => {
               <Cpu className="w-4 h-4 text-blue-400 shrink-0" />
               <span className="text-sm font-medium text-foreground whitespace-nowrap">Алгоритмы RL</span>
             </button>
-            <button onClick={() => navigate("/hub/fca-rl")} className={`flex items-center justify-center gap-2 w-[148px] h-10 rounded-full bg-card/60 backdrop-blur-sm border transition-all duration-300 cursor-pointer hover:scale-105 ${location.pathname === "/hub/fca-rl" ? "border-yellow-500/70 bg-yellow-500/15 shadow-glow-yellow" : "border-yellow-500/30 shadow-glow-yellow hover:bg-yellow-500/10"}`}>
-              <Network className="w-4 h-4 text-yellow-400 shrink-0" />
-              <span className="text-sm font-medium text-foreground whitespace-nowrap">FCA + RL</span>
-            </button>
-
             {/* Utility items */}
             <div className="flex items-center gap-3 ml-3 pl-3 border-l border-border/30">
               <button
@@ -262,7 +257,7 @@ const Navbar = () => {
                     { href: "/hub/project", label: "Проекты", Icon: Rocket, color: "text-secondary" },
                     { href: "/hub/math-rl", label: "Математика RL", Icon: Sparkles, color: "text-accent" },
                     { href: "/algorithms", label: "Алгоритмы RL", Icon: Cpu, color: "text-blue-400" },
-                    { href: "/hub/fca-rl", label: "FCA + RL", Icon: Network, color: "text-yellow-400" },
+                    
                   ].map((item) => (
                     <button
                       key={item.href + item.label}

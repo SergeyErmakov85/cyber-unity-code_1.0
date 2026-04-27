@@ -4,7 +4,7 @@ import FooterSection from "@/components/landing/FooterSection";
 import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, ArrowRight, Apple, Snowflake } from "lucide-react";
+import { ArrowLeft, ArrowRight, Apple, Snowflake, Network } from "lucide-react";
 
 interface ProjectEntry {
   id: string;
@@ -34,6 +34,15 @@ const projects: ProjectEntry[] = [
       "Классическая задача на табличный Q-Learning: скользкое озеро, дискретные состояния, стохастические переходы.",
     icon: Snowflake,
     link: "/projects/frozen-lake",
+    ready: true,
+  },
+  {
+    id: "fca-rl",
+    title: "FCA + RL для NPC",
+    description:
+      "Применение Формального Анализа Понятий (FCA) для структурирования пространства состояний RL-агентов в Unity.",
+    icon: Network,
+    link: "/hub/fca-rl",
     ready: true,
   },
 ];
