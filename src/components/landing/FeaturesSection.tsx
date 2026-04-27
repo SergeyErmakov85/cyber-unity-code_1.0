@@ -133,14 +133,14 @@ const FeaturesSection = () => {
                     }}
                   >
                     <Icon
-                      className="w-8 h-8 mb-2 transition-all duration-300"
+                      className="w-12 h-12 mb-3 transition-all duration-300"
                       style={{
                         color: `hsl(${feature.hsl})`,
                         filter: isActive ? `drop-shadow(0 0 10px hsla(${feature.hsl}, 0.7))` : "none",
                       }}
                     />
                     <span
-                      className="text-sm font-bold"
+                      className="text-lg font-bold"
                       style={{ color: `hsl(${feature.hsl})` }}
                     >
                       {feature.title}
