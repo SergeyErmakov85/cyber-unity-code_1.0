@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, GraduationCap, Code2, FileText, CreditCard, HelpCircle, Users, Search, LogOut, Brain, Gamepad2, Sparkles, Rocket, Network, User as UserIcon, Cpu } from "lucide-react";
+import { Menu, GraduationCap, Code2, FileText, CreditCard, HelpCircle, Users, Search, LogOut, Brain, Gamepad2, Sparkles, Rocket, Network, User as UserIcon, Cpu, Microscope } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import logoImage from "@/assets/logo-rl-platform.png";
@@ -170,6 +170,10 @@ const Navbar = () => {
               <Cpu className="w-4 h-4 text-blue-400 shrink-0" />
               <span className="text-sm font-medium text-foreground whitespace-nowrap">Алгоритмы RL</span>
             </button>
+            <button onClick={() => navigate("/hub/research")} className={`flex items-center justify-center gap-2 w-[148px] h-10 rounded-full bg-card/60 backdrop-blur-sm border transition-all duration-300 cursor-pointer hover:scale-105 ${location.pathname === "/hub/research" ? "border-yellow-400/70 bg-yellow-400/15 shadow-glow-yellow" : "border-yellow-400/30 shadow-glow-yellow hover:bg-yellow-400/10"}`}>
+              <Microscope className="w-4 h-4 text-yellow-400 shrink-0" />
+              <span className="text-sm font-medium text-foreground whitespace-nowrap">Исследования RL</span>
+            </button>
             {/* Utility items */}
             <div className="flex items-center gap-3 ml-3 pl-3 border-l border-border/30">
               <button
@@ -257,6 +261,7 @@ const Navbar = () => {
                     { href: "/hub/project", label: "Проекты", Icon: Rocket, color: "text-secondary" },
                     { href: "/hub/math-rl", label: "Математика RL", Icon: Sparkles, color: "text-accent" },
                     { href: "/algorithms", label: "Алгоритмы RL", Icon: Cpu, color: "text-blue-400" },
+                    { href: "/hub/research", label: "Исследования RL", Icon: Microscope, color: "text-yellow-400" },
                     
                   ].map((item) => (
                     <button
