@@ -43,9 +43,9 @@ const Index = () => {
       <ProblemSection />
       <SolutionSection />
       <FeaturesSection />
+      <AudienceSection />
       <DemoSection />
       <LearningPathSection />
-      <AudienceSection />
       <UniqueValueSection />
       <TestimonialSection />
       <AboutMeSection />
