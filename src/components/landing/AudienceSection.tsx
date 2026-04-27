@@ -80,10 +80,10 @@ const clipPaths: Record<string, string> = {
 
 /* content anchor positions inside the diamond */
 const contentPosition: Record<string, string> = {
-  top:    "top-[8%] left-1/2 -translate-x-1/2",
-  right:  "top-1/2 right-[8%] -translate-y-1/2 text-right",
-  bottom: "bottom-[8%] left-1/2 -translate-x-1/2",
-  left:   "top-1/2 left-[8%] -translate-y-1/2 text-left",
+  top:    "top-[8%] left-1/2 -translate-x-1/2 text-center",
+  right:  "top-1/2 right-[8%] -translate-y-1/2 text-center",
+  bottom: "bottom-[8%] left-1/2 -translate-x-1/2 text-center",
+  left:   "top-1/2 left-[8%] -translate-y-1/2 text-center",
 };
 
 const AudienceSection = () => {
