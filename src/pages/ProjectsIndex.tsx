@@ -36,6 +36,15 @@ const projects: ProjectEntry[] = [
     link: "/projects/frozen-lake",
     ready: true,
   },
+  {
+    id: "fca-rl",
+    title: "FCA + RL для NPC",
+    description:
+      "Применение Формального Анализа Понятий (FCA) для структурирования пространства состояний RL-агентов в Unity.",
+    icon: Network,
+    link: "/hub/fca-rl",
+    ready: true,
+  },
 ];
 
 const ProjectsIndex = () => {
