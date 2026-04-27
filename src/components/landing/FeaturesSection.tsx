@@ -153,18 +153,18 @@ const FeaturesSection = () => {
                     style={{
                       ...getTooltipStyle(index),
                       opacity: isActive ? 1 : 0,
-                      width: 220,
+                      width: 300,
                     }}
                   >
                     <div
-                      className="rounded-xl p-4 border-2 backdrop-blur-md"
+                      className="rounded-xl p-5 border-2 backdrop-blur-md"
                       style={{
                         background: `hsla(${feature.hsl}, 0.12)`,
                         borderColor: `hsla(${feature.hsl}, 0.5)`,
                         boxShadow: `0 0 25px hsla(${feature.hsl}, 0.2)`,
                       }}
                     >
-                      <p className="text-sm leading-relaxed text-foreground/90">
+                      <p className="text-base leading-relaxed text-foreground/90">
                         {feature.description}
                       </p>
                     </div>
@@ -220,18 +220,18 @@ const FeaturesSection = () => {
                 style={{
                   ...getTooltipStyle(6),
                   opacity: active === 6 ? 1 : 0,
-                  width: 220,
+                  width: 300,
                 }}
               >
                 <div
-                  className="rounded-xl p-4 border-2 backdrop-blur-md"
+                  className="rounded-xl p-5 border-2 backdrop-blur-md"
                   style={{
                     background: `hsla(${centerFeature.hsl}, 0.12)`,
                     borderColor: `hsla(${centerFeature.hsl}, 0.5)`,
                     boxShadow: `0 0 25px hsla(${centerFeature.hsl}, 0.2)`,
                   }}
                 >
-                  <p className="text-sm leading-relaxed text-foreground/90">
+                  <p className="text-base leading-relaxed text-foreground/90">
                     {centerFeature.description}
                   </p>
                 </div>
