@@ -257,7 +257,7 @@ const Navbar = () => {
                     { href: "/hub/project", label: "Проекты", Icon: Rocket, color: "text-secondary" },
                     { href: "/hub/math-rl", label: "Математика RL", Icon: Sparkles, color: "text-accent" },
                     { href: "/algorithms", label: "Алгоритмы RL", Icon: Cpu, color: "text-blue-400" },
-                    { href: "/hub/fca-rl", label: "FCA + RL", Icon: Network, color: "text-yellow-400" },
+                    
                   ].map((item) => (
                     <button
                       key={item.href + item.label}
