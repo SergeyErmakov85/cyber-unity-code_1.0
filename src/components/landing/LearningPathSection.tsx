@@ -144,7 +144,7 @@ const LearningPathSection = () => {
                                     return (
                                       <span
                                         key={hId}
-                                        className="inline-block w-2.5 h-2.5 rounded-full"
+                                         className="inline-block w-4 h-4 rounded-full"
                                         style={{ backgroundColor: colorMap[hub.colorAccent] ?? "hsl(var(--primary))" }}
                                         title={hub.label}
                                       />
