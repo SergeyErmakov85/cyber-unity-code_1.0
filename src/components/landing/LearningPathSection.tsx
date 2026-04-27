@@ -134,11 +134,9 @@ const LearningPathSection = () => {
                                   {hubIds.slice(0, 3).map((hId) => {
                                     const hub = SUPPORT_HUBS[hId];
                                     const colorMap: Record<string, string> = {
-                                      "text-orange-400": "hsl(25, 95%, 53%)",
-                                      "text-emerald-400": "hsl(160, 84%, 39%)",
-                                      "text-sky-400": "hsl(198, 93%, 60%)",
-                                      "text-violet-400": "hsl(263, 70%, 50%)",
-                                      "text-amber-400": "hsl(38, 92%, 50%)",
+                                      "text-primary": "hsl(var(--primary))",
+                                      "text-secondary": "hsl(var(--secondary))",
+                                      "text-accent": "hsl(var(--accent))",
                                       "text-yellow-400": "hsl(48, 96%, 53%)",
                                     };
                                     return (
@@ -169,11 +167,9 @@ const LearningPathSection = () => {
             {(Object.keys(SUPPORT_HUBS) as HubId[]).map((hId) => {
               const hub = SUPPORT_HUBS[hId];
               const colorMap: Record<string, string> = {
-                "text-orange-400": "hsl(25, 95%, 53%)",
-                "text-emerald-400": "hsl(160, 84%, 39%)",
-                "text-sky-400": "hsl(198, 93%, 60%)",
-                "text-violet-400": "hsl(263, 70%, 50%)",
-                "text-amber-400": "hsl(38, 92%, 50%)",
+                "text-primary": "hsl(var(--primary))",
+                "text-secondary": "hsl(var(--secondary))",
+                "text-accent": "hsl(var(--accent))",
                 "text-yellow-400": "hsl(48, 96%, 53%)",
               };
               return (
