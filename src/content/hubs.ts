@@ -55,9 +55,9 @@ export const SUPPORT_HUBS: Record<HubId, SupportHub> = {
   },
   "fca-rl": {
     id: "fca-rl",
-    label: "FCA + RL для NPC",
+    label: "Исследования RL",
     slug: "fca-rl",
-    shortDescription: "Применение Формального Анализа Понятий (FCA) для структурирования пространства состояний RL-агентов в Unity.",
+    shortDescription: "Исследовательские направления RL: FCA для структурирования состояний, лаборатории и визуализации.",
     icon: Network,
     colorAccent: "text-yellow-400",
   },
