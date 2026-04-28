@@ -62,7 +62,7 @@ const colorConfig = {
     stroke: "hsl(var(--secondary))",
     glow: "hsla(var(--secondary), 0.9)",
     fill: "hsla(var(--secondary), 0.06)",
-    fillActive: "hsla(var(--secondary), 0.55)",
+    fillActive: "hsla(var(--secondary), 0.18)",
   },
   accent: {
     number: "text-accent",
