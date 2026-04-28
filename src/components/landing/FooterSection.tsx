@@ -8,7 +8,7 @@ const footerLinks = {
       { label: "Курсы", href: "/courses" },
       { label: "Примеры кода", href: "/code-examples" },
       { label: "Исследования RL", href: "/hub/research" },
-      { label: "Проекты", href: "/hub/project" },
+      { label: "Проекты", href: "/unity-projects" },
     ],
   },
   algorithms: {
