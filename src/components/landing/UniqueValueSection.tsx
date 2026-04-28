@@ -43,39 +43,143 @@ const values = [
 const colorConfig = {
   primary: {
     number: "text-primary",
-    border: "border-primary/20",
-    activeBorder: "border-primary/60",
     text: "text-primary",
-    bg: "bg-primary/5",
-    activeBg: "bg-primary/10",
-    line: "bg-primary/40",
+    stroke: "hsl(var(--primary))",
+    glow: "hsla(var(--primary), 0.35)",
+    fill: "hsla(var(--primary), 0.05)",
+    fillActive: "hsla(var(--primary), 0.12)",
   },
   secondary: {
     number: "text-secondary",
-    border: "border-secondary/20",
-    activeBorder: "border-secondary/60",
     text: "text-secondary",
-    bg: "bg-secondary/5",
-    activeBg: "bg-secondary/10",
-    line: "bg-secondary/40",
+    stroke: "hsl(var(--secondary))",
+    glow: "hsla(var(--secondary), 0.35)",
+    fill: "hsla(var(--secondary), 0.05)",
+    fillActive: "hsla(var(--secondary), 0.12)",
   },
   accent: {
     number: "text-accent",
-    border: "border-accent/20",
-    activeBorder: "border-accent/60",
     text: "text-accent",
-    bg: "bg-accent/5",
-    activeBg: "bg-accent/10",
-    line: "bg-accent/40",
+    stroke: "hsl(var(--accent))",
+    glow: "hsla(var(--accent), 0.35)",
+    fill: "hsla(var(--accent), 0.05)",
+    fillActive: "hsla(var(--accent), 0.12)",
   },
 };
+
+// Trapezoid shapes per position (top row leans inward to center, bottom row mirrors)
+// Indices: 0=top-left, 1=top-center, 2=top-right, 3=bottom-right, 4=bottom-center, 5=bottom-left
+const shapes = [
+  // Top-left: wider at bottom-left, leans toward top-right (down to center)
+  "polygon(0% 30%, 85% 0%, 100% 100%, 15% 100%)",
+  // Top-center: trapezoid, narrower at top
+  "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
+  // Top-right: mirror of top-left
+  "polygon(15% 0%, 100% 30%, 85% 100%, 0% 100%)",
+  // Bottom-right: wider at top-right, leans down-left
+  "polygon(0% 0%, 100% 0%, 85% 70%, 15% 100%)",
+  // Bottom-center: inverted trapezoid
+  "polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%)",
+  // Bottom-left: mirror of bottom-right
+  "polygon(0% 0%, 100% 0%, 100% 100%, 15% 70%)",
+];
 
 const UniqueValueSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  // Reorder for visual hex layout: row1 = [0,1,2], row2 = [5,4,3] (per reference)
+  const rowTop = [values[0], values[1], values[2]];
+  const rowBottom = [values[5], values[4], values[3]];
+  const idxTop = [0, 1, 2];
+  const idxBottom = [5, 4, 3];
+  const shapeTop = [shapes[0], shapes[1], shapes[2]];
+  const shapeBottom = [shapes[5], shapes[4], shapes[3]];
+
+  const renderCell = (value: typeof values[number], realIdx: number, shape: string) => {
+    const Icon = value.icon;
+    const colors = colorConfig[value.color];
+    const isOpen = openIndex === realIdx;
+
+    return (
+      <div
+        key={realIdx}
+        className="relative cursor-pointer group"
+        style={{ aspectRatio: "16 / 10" }}
+        onMouseEnter={() => setOpenIndex(realIdx)}
+        onMouseLeave={() => setOpenIndex(null)}
+      >
+        {/* Hex shape with neon border via filter */}
+        <div
+          className="absolute inset-0 transition-all duration-300"
+          style={{
+            clipPath: shape,
+            background: isOpen ? colors.fillActive : colors.fill,
+            filter: isOpen
+              ? `drop-shadow(0 0 12px ${colors.glow}) drop-shadow(0 0 24px ${colors.glow})`
+              : `drop-shadow(0 0 6px ${colors.glow})`,
+          }}
+        />
+        {/* Stroke layer: a slightly inset shape with a colored bg, masked by inner shape */}
+        <div
+          className="absolute inset-0 transition-opacity duration-300"
+          style={{
+            clipPath: shape,
+            background: colors.stroke,
+            opacity: isOpen ? 0.9 : 0.6,
+            padding: "1.5px",
+          }}
+        >
+          <div
+            className="w-full h-full"
+            style={{
+              clipPath: shape,
+              background: "hsl(var(--background))",
+            }}
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-7">
+          <div className="flex items-start justify-between gap-3">
+            <div className="space-y-2 min-w-0">
+              <div className={`text-sm font-mono font-bold ${colors.number} opacity-80`}>
+                {String(realIdx + 1).padStart(2, "0")}
+              </div>
+              <h3 className="text-base md:text-lg font-bold text-foreground leading-tight">
+                {value.title}
+              </h3>
+            </div>
+            <Icon
+              className={`w-7 h-7 md:w-8 md:h-8 ${colors.text} shrink-0 transition-transform duration-300 ${
+                isOpen ? "scale-110" : ""
+              }`}
+              style={{
+                filter: isOpen ? `drop-shadow(0 0 8px ${colors.glow})` : "none",
+              }}
+            />
+          </div>
+
+          <div className="flex items-end justify-between gap-3">
+            <p
+              className={`text-xs md:text-sm text-muted-foreground leading-relaxed transition-all duration-300 ${
+                isOpen ? "opacity-100 max-h-40" : "opacity-0 max-h-0 overflow-hidden"
+              }`}
+            >
+              {value.description}
+            </p>
+            <ChevronDown
+              className={`w-4 h-4 text-muted-foreground/60 shrink-0 transition-transform duration-300 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className="py-20 px-4 relative overflow-hidden">
-      {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-3xl" />
@@ -94,62 +198,49 @@ const UniqueValueSection = () => {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-0">
+        {/* Desktop: hex composition */}
+        <div className="hidden md:block max-w-6xl mx-auto space-y-4">
+          <div className="grid grid-cols-3 gap-4">
+            {rowTop.map((v, i) => renderCell(v, idxTop[i], shapeTop[i]))}
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            {rowBottom.map((v, i) => renderCell(v, idxBottom[i], shapeBottom[i]))}
+          </div>
+        </div>
+
+        {/* Mobile: simple stack */}
+        <div className="md:hidden max-w-md mx-auto space-y-3">
           {values.map((value, index) => {
             const Icon = value.icon;
             const colors = colorConfig[value.color];
             const isOpen = openIndex === index;
-
             return (
-              <div key={index} className="relative">
-                {/* Connecting line */}
-                {index < values.length - 1 && (
-                  <div className={`absolute left-6 top-full w-px h-0 ${colors.line} z-0`} 
-                       style={{ height: '1px' }} />
-                )}
-
-                <div
-                  onMouseEnter={() => setOpenIndex(index)}
-                  onMouseLeave={() => setOpenIndex(null)}
-                  className={`w-full text-left transition-all duration-300 border-b cursor-default ${
-                    isOpen ? colors.activeBorder : 'border-border/30'
-                  } ${isOpen ? colors.activeBg : 'hover:bg-muted/30'}`}
-                >
-                  <div className="flex items-center gap-5 py-5 px-4 md:px-6">
-                    {/* Number */}
-                    <span className={`text-sm font-mono font-bold ${colors.number} opacity-60 min-w-[2rem] text-right`}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    {/* Icon */}
-                    <div className={`w-10 h-10 rounded-lg ${colors.bg} flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'scale-110' : ''}`}>
-                      <Icon className={`w-5 h-5 ${colors.text}`} />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-lg font-bold text-foreground flex-1">
-                      {value.title}
-                    </h3>
-
-                    {/* Chevron */}
-                    <ChevronDown
-                      className={`w-5 h-5 text-muted-foreground transition-transform duration-300 shrink-0 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </div>
-
-                  {/* Expandable description */}
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-out ${
-                      isOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+              <div
+                key={index}
+                onClick={() => setOpenIndex(isOpen ? null : index)}
+                className="border rounded-lg p-4 transition-colors"
+                style={{
+                  borderColor: isOpen ? colors.stroke : "hsl(var(--border))",
+                  background: isOpen ? colors.fillActive : "transparent",
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`text-xs font-mono font-bold ${colors.number} opacity-70`}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <Icon className={`w-5 h-5 ${colors.text}`} />
+                  <h3 className="text-sm font-bold text-foreground flex-1">{value.title}</h3>
+                  <ChevronDown
+                    className={`w-4 h-4 text-muted-foreground transition-transform ${
+                      isOpen ? "rotate-180" : ""
                     }`}
-                  >
-                    <p className="text-sm text-muted-foreground leading-relaxed px-4 md:px-6 pb-5 pl-[5.75rem]">
-                      {value.description}
-                    </p>
-                  </div>
+                  />
                 </div>
+                {isOpen && (
+                  <p className="text-xs text-muted-foreground leading-relaxed mt-3">
+                    {value.description}
+                  </p>
+                )}
               </div>
             );
           })}
