@@ -77,7 +77,7 @@ const CourseLesson2_1 = () => {
       duration="35 мин"
       tags={["#theory", "#pytorch", "#policy-gradient"]}
       level={2}
-      prevLesson={{ path: "/courses/project-1", title: "Проект 1" }}
+      prevLesson={{ path: "/courses/project-1", title: 'Проект-1: "Баланс в 3D"' }}
       nextLesson={{ path: "/courses/2-2", title: "PPO с нуля" }}
     >
       <ProGate preview={preview}>

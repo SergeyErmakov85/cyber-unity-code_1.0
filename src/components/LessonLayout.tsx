@@ -47,7 +47,7 @@ const level1Lessons: LessonMeta[] = [
   { id: "1-5", path: "/courses/1-5", title: "DQN с нуля на PyTorch", type: "lesson" },
   { id: "1-6", path: "/courses/1-6", title: "Марковские процессы принятия решений (MDP)", type: "lesson" },
   { id: "1-7", path: "/courses/1-7", title: "Exploration vs Exploitation", type: "lesson" },
-  { id: "1-p", path: "/courses/project-1", title: "Проект: Балансировка шеста", type: "project" },
+  { id: "1-p", path: "/courses/project-1", title: 'Проект-1: "Баланс в 3D"', type: "project" },
 ];
 
 const level2Lessons: LessonMeta[] = [
