@@ -77,9 +77,9 @@ const colorConfig = {
 // Hexagon geometry
 // Container: 1100x600. Center at (550, 300). Hex "radius" R = 280.
 // 6 vertices of a flat-top hexagon (angles 0, 60, 120, 180, 240, 300):
-const R = 280;
-const CX = 550;
-const CY = 300;
+const R = 364;
+const CX = 715;
+const CY = 390;
 const vertex = (deg: number) => ({
   x: CX + R * Math.cos((deg * Math.PI) / 180),
   y: CY + R * Math.sin((deg * Math.PI) / 180),
