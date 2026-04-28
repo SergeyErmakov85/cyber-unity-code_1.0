@@ -52,25 +52,25 @@ const colorConfig = {
     number: "text-primary",
     text: "text-primary",
     stroke: "hsl(var(--primary))",
-    glow: "hsla(var(--primary), 0.9)",
-    fill: "hsla(var(--primary), 0.06)",
-    fillActive: "hsla(var(--primary), 0.18)",
+    glow: "hsla(var(--primary), 0.15)",
+    fill: "hsla(var(--primary), 0.04)",
+    fillActive: "hsla(var(--primary), 0.10)",
   },
   secondary: {
     number: "text-secondary",
     text: "text-secondary",
     stroke: "hsl(var(--secondary))",
-    glow: "hsla(var(--secondary), 0.9)",
-    fill: "hsla(var(--secondary), 0.06)",
-    fillActive: "hsla(var(--secondary), 0.18)",
+    glow: "hsla(var(--secondary), 0.15)",
+    fill: "hsla(var(--secondary), 0.04)",
+    fillActive: "hsla(var(--secondary), 0.10)",
   },
   accent: {
     number: "text-accent",
     text: "text-accent",
     stroke: "hsl(var(--accent))",
-    glow: "hsla(var(--accent), 0.9)",
-    fill: "hsla(var(--accent), 0.06)",
-    fillActive: "hsla(var(--accent), 0.18)",
+    glow: "hsla(var(--accent), 0.15)",
+    fill: "hsla(var(--accent), 0.04)",
+    fillActive: "hsla(var(--accent), 0.10)",
   },
 };
 
@@ -160,12 +160,10 @@ const UniqueValueSection = () => {
                     points={points}
                     fill={isOpen ? colors.fillActive : colors.fill}
                     stroke={colors.stroke}
-                    strokeWidth={isOpen ? 3 : 1.5}
+                    strokeWidth={isOpen ? 2 : 1.5}
                     style={{
-                      filter: isOpen
-                        ? `drop-shadow(0 0 24px ${colors.glow}) drop-shadow(0 0 48px ${colors.glow}) drop-shadow(0 0 80px ${colors.glow}) brightness(1.4)`
-                        : `drop-shadow(0 0 12px ${colors.glow}) drop-shadow(0 0 24px ${colors.glow})`,
-                      transition: "all 0.3s ease",
+                      filter: isOpen ? `drop-shadow(0 0 30px ${colors.glow})` : "none",
+                      transition: "all 0.5s ease",
                       cursor: "pointer",
                     }}
                     onMouseEnter={() => setOpenIndex(i)}
