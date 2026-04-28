@@ -160,10 +160,12 @@ const UniqueValueSection = () => {
                     points={points}
                     fill={isOpen ? colors.fillActive : colors.fill}
                     stroke={colors.stroke}
-                    strokeWidth={isOpen ? 2 : 1.5}
+                    strokeWidth={isOpen ? 2.5 : 1.5}
                     style={{
-                      filter: isOpen ? `drop-shadow(0 0 30px ${colors.glow})` : "none",
-                      transition: "all 0.5s ease",
+                      filter: isOpen
+                        ? `drop-shadow(0 0 40px ${colors.glow}) drop-shadow(0 0 15px ${colors.glow})`
+                        : "none",
+                      transition: "all 0.4s ease",
                       cursor: "pointer",
                     }}
                     onMouseEnter={() => setOpenIndex(i)}
