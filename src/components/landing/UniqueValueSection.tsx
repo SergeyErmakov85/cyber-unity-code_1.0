@@ -162,16 +162,17 @@ const UniqueValueSection = () => {
                     points={points}
                     fill={isOpen ? colors.fillActive : colors.fill}
                     stroke={colors.stroke}
-                    strokeWidth={isOpen ? 2.5 : 1.5}
+                    strokeWidth={isOpen ? 3 : 1.5}
                     style={{
                       filter: isOpen
-                        ? `drop-shadow(0 0 14px ${colors.glow}) drop-shadow(0 0 28px ${colors.glow})`
+                        ? `drop-shadow(0 0 18px ${colors.glow}) drop-shadow(0 0 36px ${colors.glow}) brightness(1.25)`
                         : `drop-shadow(0 0 6px ${colors.glow})`,
                       transition: "all 0.3s ease",
                       cursor: "pointer",
                     }}
                     onMouseEnter={() => setOpenIndex(i)}
                     onMouseLeave={() => setOpenIndex(null)}
+                    onClick={() => navigate(value.link)}
                   />
                 );
               })}
