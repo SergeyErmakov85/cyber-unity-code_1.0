@@ -77,9 +77,9 @@ const colorConfig = {
 // Hexagon geometry
 // Container: 1100x600. Center at (550, 300). Hex "radius" R = 280.
 // 6 vertices of a flat-top hexagon (angles 0, 60, 120, 180, 240, 300):
-const R = 280;
-const CX = 550;
-const CY = 300;
+const R = 364;
+const CX = 715;
+const CY = 390;
 const vertex = (deg: number) => ({
   x: CX + R * Math.cos((deg * Math.PI) / 180),
   y: CY + R * Math.sin((deg * Math.PI) / 180),
@@ -141,10 +141,10 @@ const UniqueValueSection = () => {
         <div className="hidden md:flex justify-center">
           <div
             className="relative"
-            style={{ width: "1100px", height: "600px", maxWidth: "100%" }}
+            style={{ width: "1430px", height: "780px", maxWidth: "100%" }}
           >
             <svg
-              viewBox="0 0 1100 600"
+              viewBox="0 0 1430 780"
               className="absolute inset-0 w-full h-full"
               style={{ overflow: "visible" }}
             >
@@ -191,9 +191,9 @@ const UniqueValueSection = () => {
               const colors = colorConfig[value.color];
               const isOpen = openIndex === i;
 
-              // Convert SVG coords -> percentage of container (1100x600)
-              const leftPct = (cx / 1100) * 100;
-              const topPct = (cy / 600) * 100;
+              // Convert SVG coords -> percentage of container (1430x780)
+              const leftPct = (cx / 1430) * 100;
+              const topPct = (cy / 780) * 100;
 
               return (
                 <div
