@@ -54,7 +54,7 @@ const colorConfig = {
     stroke: "hsl(var(--primary))",
     glow: "hsla(var(--primary), 0.9)",
     fill: "hsla(var(--primary), 0.06)",
-    fillActive: "hsla(var(--primary), 0.32)",
+    fillActive: "hsla(var(--primary), 0.55)",
   },
   secondary: {
     number: "text-secondary",
@@ -62,7 +62,7 @@ const colorConfig = {
     stroke: "hsl(var(--secondary))",
     glow: "hsla(var(--secondary), 0.9)",
     fill: "hsla(var(--secondary), 0.06)",
-    fillActive: "hsla(var(--secondary), 0.32)",
+    fillActive: "hsla(var(--secondary), 0.55)",
   },
   accent: {
     number: "text-accent",
@@ -70,16 +70,14 @@ const colorConfig = {
     stroke: "hsl(var(--accent))",
     glow: "hsla(var(--accent), 0.9)",
     fill: "hsla(var(--accent), 0.06)",
-    fillActive: "hsla(var(--accent), 0.32)",
+    fillActive: "hsla(var(--accent), 0.55)",
   },
 };
 
-// Hexagon geometry
-// Container: 1100x600. Center at (550, 300). Hex "radius" R = 280.
-// 6 vertices of a flat-top hexagon (angles 0, 60, 120, 180, 240, 300):
-const R = 364;
-const CX = 715;
-const CY = 390;
+// Hexagon geometry — flat-top hexagon with 6 trapezoid segments.
+const R = 474;
+const CX = 930;
+const CY = 510;
 const vertex = (deg: number) => ({
   x: CX + R * Math.cos((deg * Math.PI) / 180),
   y: CY + R * Math.sin((deg * Math.PI) / 180),
