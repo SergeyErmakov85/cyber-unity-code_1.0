@@ -8,7 +8,7 @@ const AboutMeSection = () => {
         <div className="absolute bottom-1/4 -left-32 w-80 h-80 bg-primary/8 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto max-w-4xl relative z-10">
+      <div className="container mx-auto max-w-[84rem] relative z-10">
         <div className="text-center mb-12 space-y-4">
           <h2 className="text-3xl md:text-5xl font-bold">
             <span className="bg-gradient-neon bg-clip-text text-transparent">
