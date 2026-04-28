@@ -138,8 +138,8 @@ const UniqueValueSection = () => {
         {/* Desktop hexagon */}
         <div className="hidden md:flex justify-center">
           <div
-            className="relative"
-            style={{ width: "1860px", height: "1020px", maxWidth: "100%" }}
+            className="relative w-full"
+            style={{ maxWidth: "1860px", aspectRatio: "1860 / 1020" }}
           >
             <svg
               viewBox="0 0 1860 1020"
