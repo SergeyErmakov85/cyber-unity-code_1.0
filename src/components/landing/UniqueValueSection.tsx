@@ -4,37 +4,37 @@ import { FlaskConical, Gamepad2, GraduationCap, Repeat, Eye, Zap, ChevronDown } 
 const values = [
   {
     icon: Repeat,
-    title: "Воспроизводимые эксперименты",
+    title: "Воспроизводимые\nэксперименты",
     description: "Каждый проект включает фиксированные seed-значения, версии зависимостей и детальные инструкции. Получите те же результаты, что и в примерах",
     color: "primary" as const,
   },
   {
     icon: Gamepad2,
-    title: "Реальные игровые среды",
+    title: "Реальные\nигровые среды",
     description: "Не абстрактные задачи, а полноценные Unity-проекты. Обучайте агентов в 3D-мирах с физикой, визуализацией и интерактивностью",
     color: "secondary" as const,
   },
   {
     icon: FlaskConical,
-    title: "Научный подход",
+    title: "Научный\nподход",
     description: "Следуем лучшим практикам из исследований. Алгоритмы реализованы согласно оригинальным статьям с понятными объяснениями",
     color: "accent" as const,
   },
   {
     icon: Eye,
-    title: "Визуализация обучения",
+    title: "Визуализация\nобучения",
     description: "Наблюдайте за процессом в реальном времени. Графики наград, траектории агентов, распределения действий — всё визуализировано",
     color: "primary" as const,
   },
   {
     icon: GraduationCap,
-    title: "От основ до продвинутого",
+    title: "От основ\nдо продвинутого",
     description: "Структурированная программа обучения. Начните с базовых концепций и дойдите до state-of-the-art алгоритмов",
     color: "secondary" as const,
   },
   {
     icon: Zap,
-    title: "Практика с первого дня",
+    title: "Практика\nс первого дня",
     description: "Никакой месячной подготовки. Запустите первого агента в первый же день обучения и сразу увидите результаты",
     color: "accent" as const,
   },
@@ -45,138 +45,69 @@ const colorConfig = {
     number: "text-primary",
     text: "text-primary",
     stroke: "hsl(var(--primary))",
-    glow: "hsla(var(--primary), 0.35)",
-    fill: "hsla(var(--primary), 0.05)",
+    glow: "hsla(var(--primary), 0.4)",
+    fill: "hsla(var(--primary), 0.04)",
     fillActive: "hsla(var(--primary), 0.12)",
   },
   secondary: {
     number: "text-secondary",
     text: "text-secondary",
     stroke: "hsl(var(--secondary))",
-    glow: "hsla(var(--secondary), 0.35)",
-    fill: "hsla(var(--secondary), 0.05)",
+    glow: "hsla(var(--secondary), 0.4)",
+    fill: "hsla(var(--secondary), 0.04)",
     fillActive: "hsla(var(--secondary), 0.12)",
   },
   accent: {
     number: "text-accent",
     text: "text-accent",
     stroke: "hsl(var(--accent))",
-    glow: "hsla(var(--accent), 0.35)",
-    fill: "hsla(var(--accent), 0.05)",
+    glow: "hsla(var(--accent), 0.4)",
+    fill: "hsla(var(--accent), 0.04)",
     fillActive: "hsla(var(--accent), 0.12)",
   },
 };
 
-// Trapezoid shapes per position (top row leans inward to center, bottom row mirrors)
-// Indices: 0=top-left, 1=top-center, 2=top-right, 3=bottom-right, 4=bottom-center, 5=bottom-left
-const shapes = [
-  // Top-left: wider at bottom-left, leans toward top-right (down to center)
-  "polygon(0% 30%, 85% 0%, 100% 100%, 15% 100%)",
-  // Top-center: trapezoid, narrower at top
-  "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
-  // Top-right: mirror of top-left
-  "polygon(15% 0%, 100% 30%, 85% 100%, 0% 100%)",
-  // Bottom-right: wider at top-right, leans down-left
-  "polygon(0% 0%, 100% 0%, 85% 70%, 15% 100%)",
-  // Bottom-center: inverted trapezoid
-  "polygon(0% 0%, 100% 0%, 90% 100%, 10% 100%)",
-  // Bottom-left: mirror of bottom-right
-  "polygon(0% 0%, 100% 0%, 100% 100%, 15% 70%)",
+// Hexagon geometry
+// Container: 1100x600. Center at (550, 300). Hex "radius" R = 280.
+// 6 vertices of a flat-top hexagon (angles 0, 60, 120, 180, 240, 300):
+const R = 280;
+const CX = 550;
+const CY = 300;
+const vertex = (deg: number) => ({
+  x: CX + R * Math.cos((deg * Math.PI) / 180),
+  y: CY + R * Math.sin((deg * Math.PI) / 180),
+});
+
+// Vertices: V0=right, V1=bottom-right, V2=bottom-left, V3=left, V4=top-left, V5=top-right
+const V = [vertex(0), vertex(60), vertex(120), vertex(180), vertex(240), vertex(300)];
+
+// 6 trapezoid segments — each is a quadrilateral: 2 adjacent vertices + 2 inset points toward center.
+// Inset factor controls the "thickness" of each trapezoid (inner edge distance from center).
+const INSET = 0.42; // 0 = at center, 1 = at edge
+const insetPoint = (v: { x: number; y: number }) => ({
+  x: CX + (v.x - CX) * INSET,
+  y: CY + (v.y - CY) * INSET,
+});
+
+// Segment positions (clockwise from top): top, top-right, bottom-right, bottom, bottom-left, top-left
+// Map to values order on screenshot:
+// 0: top-left  -> Воспроизводимые (V4-V5 outer, inner-V4, inner-V5)... use top segment between V4 and V5
+// We define 6 segments by adjacent vertex pairs:
+const segments = [
+  { outer: [V[4], V[5]], label: "top" },          // top edge
+  { outer: [V[5], V[0]], label: "top-right" },    // top-right
+  { outer: [V[0], V[1]], label: "bottom-right" }, // bottom-right
+  { outer: [V[1], V[2]], label: "bottom" },       // bottom
+  { outer: [V[2], V[3]], label: "bottom-left" },  // bottom-left
+  { outer: [V[3], V[4]], label: "top-left" },     // top-left
 ];
+
+// Map values[i] (1..6) to visual position per reference image:
+// 01 top-left, 02 top, 03 top-right, 04 bottom-right, 05 bottom, 06 bottom-left
+const positionOrder = [5, 0, 1, 2, 3, 4]; // index into `segments` for values 0..5
 
 const UniqueValueSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  // Reorder for visual hex layout: row1 = [0,1,2], row2 = [5,4,3] (per reference)
-  const rowTop = [values[0], values[1], values[2]];
-  const rowBottom = [values[5], values[4], values[3]];
-  const idxTop = [0, 1, 2];
-  const idxBottom = [5, 4, 3];
-  const shapeTop = [shapes[0], shapes[1], shapes[2]];
-  const shapeBottom = [shapes[5], shapes[4], shapes[3]];
-
-  const renderCell = (value: typeof values[number], realIdx: number, shape: string) => {
-    const Icon = value.icon;
-    const colors = colorConfig[value.color];
-    const isOpen = openIndex === realIdx;
-
-    return (
-      <div
-        key={realIdx}
-        className="relative cursor-pointer group"
-        style={{ aspectRatio: "16 / 10" }}
-        onMouseEnter={() => setOpenIndex(realIdx)}
-        onMouseLeave={() => setOpenIndex(null)}
-      >
-        {/* Hex shape with neon border via filter */}
-        <div
-          className="absolute inset-0 transition-all duration-300"
-          style={{
-            clipPath: shape,
-            background: isOpen ? colors.fillActive : colors.fill,
-            filter: isOpen
-              ? `drop-shadow(0 0 12px ${colors.glow}) drop-shadow(0 0 24px ${colors.glow})`
-              : `drop-shadow(0 0 6px ${colors.glow})`,
-          }}
-        />
-        {/* Stroke layer: a slightly inset shape with a colored bg, masked by inner shape */}
-        <div
-          className="absolute inset-0 transition-opacity duration-300"
-          style={{
-            clipPath: shape,
-            background: colors.stroke,
-            opacity: isOpen ? 0.9 : 0.6,
-            padding: "1.5px",
-          }}
-        >
-          <div
-            className="w-full h-full"
-            style={{
-              clipPath: shape,
-              background: "hsl(var(--background))",
-            }}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col justify-between p-6 md:p-7">
-          <div className="flex items-start justify-between gap-3">
-            <div className="space-y-2 min-w-0">
-              <div className={`text-sm font-mono font-bold ${colors.number} opacity-80`}>
-                {String(realIdx + 1).padStart(2, "0")}
-              </div>
-              <h3 className="text-base md:text-lg font-bold text-foreground leading-tight">
-                {value.title}
-              </h3>
-            </div>
-            <Icon
-              className={`w-7 h-7 md:w-8 md:h-8 ${colors.text} shrink-0 transition-transform duration-300 ${
-                isOpen ? "scale-110" : ""
-              }`}
-              style={{
-                filter: isOpen ? `drop-shadow(0 0 8px ${colors.glow})` : "none",
-              }}
-            />
-          </div>
-
-          <div className="flex items-end justify-between gap-3">
-            <p
-              className={`text-xs md:text-sm text-muted-foreground leading-relaxed transition-all duration-300 ${
-                isOpen ? "opacity-100 max-h-40" : "opacity-0 max-h-0 overflow-hidden"
-              }`}
-            >
-              {value.description}
-            </p>
-            <ChevronDown
-              className={`w-4 h-4 text-muted-foreground/60 shrink-0 transition-transform duration-300 ${
-                isOpen ? "rotate-180" : ""
-              }`}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
@@ -186,7 +117,7 @@ const UniqueValueSection = () => {
       </div>
 
       <div className="container mx-auto relative z-10">
-        <div className="text-center mb-16 space-y-4">
+        <div className="text-center mb-12 space-y-4">
           <h2 className="text-3xl md:text-5xl font-bold">
             <span className="text-foreground">Почему именно </span>
             <span className="bg-gradient-neon bg-clip-text text-transparent">
@@ -198,17 +129,131 @@ const UniqueValueSection = () => {
           </p>
         </div>
 
-        {/* Desktop: hex composition */}
-        <div className="hidden md:block max-w-6xl mx-auto space-y-4">
-          <div className="grid grid-cols-3 gap-4">
-            {rowTop.map((v, i) => renderCell(v, idxTop[i], shapeTop[i]))}
-          </div>
-          <div className="grid grid-cols-3 gap-4">
-            {rowBottom.map((v, i) => renderCell(v, idxBottom[i], shapeBottom[i]))}
+        {/* Desktop hexagon */}
+        <div className="hidden md:flex justify-center">
+          <div
+            className="relative"
+            style={{ width: "1100px", height: "600px", maxWidth: "100%" }}
+          >
+            <svg
+              viewBox="0 0 1100 600"
+              className="absolute inset-0 w-full h-full"
+              style={{ overflow: "visible" }}
+            >
+              {values.map((value, i) => {
+                const seg = segments[positionOrder[i]];
+                const [a, b] = seg.outer;
+                const ai = insetPoint(a);
+                const bi = insetPoint(b);
+                const colors = colorConfig[value.color];
+                const isOpen = openIndex === i;
+                const points = `${a.x},${a.y} ${b.x},${b.y} ${bi.x},${bi.y} ${ai.x},${ai.y}`;
+                return (
+                  <polygon
+                    key={i}
+                    points={points}
+                    fill={isOpen ? colors.fillActive : colors.fill}
+                    stroke={colors.stroke}
+                    strokeWidth={isOpen ? 2.5 : 1.5}
+                    style={{
+                      filter: isOpen
+                        ? `drop-shadow(0 0 14px ${colors.glow}) drop-shadow(0 0 28px ${colors.glow})`
+                        : `drop-shadow(0 0 6px ${colors.glow})`,
+                      transition: "all 0.3s ease",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={() => setOpenIndex(i)}
+                    onMouseLeave={() => setOpenIndex(null)}
+                  />
+                );
+              })}
+            </svg>
+
+            {/* Content overlays */}
+            {values.map((value, i) => {
+              const seg = segments[positionOrder[i]];
+              const [a, b] = seg.outer;
+              const ai = insetPoint(a);
+              const bi = insetPoint(b);
+              // centroid of trapezoid
+              const cx = (a.x + b.x + ai.x + bi.x) / 4;
+              const cy = (a.y + b.y + ai.y + bi.y) / 4;
+              const Icon = value.icon;
+              const colors = colorConfig[value.color];
+              const isOpen = openIndex === i;
+
+              // Convert SVG coords -> percentage of container (1100x600)
+              const leftPct = (cx / 1100) * 100;
+              const topPct = (cy / 600) * 100;
+
+              return (
+                <div
+                  key={i}
+                  className="absolute pointer-events-none"
+                  style={{
+                    left: `${leftPct}%`,
+                    top: `${topPct}%`,
+                    transform: "translate(-50%, -50%)",
+                    width: "200px",
+                  }}
+                >
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <div className={`text-sm font-mono font-bold ${colors.number} opacity-80`}>
+                      {String(i + 1).padStart(2, "0")}
+                    </div>
+                    <Icon
+                      className={`w-7 h-7 ${colors.text} transition-transform duration-300 ${
+                        isOpen ? "scale-110" : ""
+                      }`}
+                      style={{
+                        filter: isOpen ? `drop-shadow(0 0 8px ${colors.glow})` : "none",
+                      }}
+                    />
+                    <h3
+                      className="text-sm lg:text-base font-bold text-foreground leading-tight whitespace-pre-line"
+                    >
+                      {value.title}
+                    </h3>
+                    <ChevronDown
+                      className={`w-4 h-4 text-muted-foreground/60 transition-transform duration-300 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Center description on hover */}
+            <div
+              className="absolute pointer-events-none flex items-center justify-center"
+              style={{
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "260px",
+                height: "180px",
+              }}
+            >
+              {openIndex !== null && (
+                <div
+                  className="text-center px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300"
+                  style={{
+                    borderColor: colorConfig[values[openIndex].color].stroke,
+                    background: "hsla(var(--background), 0.7)",
+                    boxShadow: `0 0 24px ${colorConfig[values[openIndex].color].glow}`,
+                  }}
+                >
+                  <p className="text-xs lg:text-sm text-foreground/90 leading-relaxed">
+                    {values[openIndex].description}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Mobile: simple stack */}
+        {/* Mobile: stack */}
         <div className="md:hidden max-w-md mx-auto space-y-3">
           {values.map((value, index) => {
             const Icon = value.icon;
@@ -218,7 +263,7 @@ const UniqueValueSection = () => {
               <div
                 key={index}
                 onClick={() => setOpenIndex(isOpen ? null : index)}
-                className="border rounded-lg p-4 transition-colors"
+                className="border rounded-lg p-4 transition-colors cursor-pointer"
                 style={{
                   borderColor: isOpen ? colors.stroke : "hsl(var(--border))",
                   background: isOpen ? colors.fillActive : "transparent",
@@ -229,7 +274,9 @@ const UniqueValueSection = () => {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <Icon className={`w-5 h-5 ${colors.text}`} />
-                  <h3 className="text-sm font-bold text-foreground flex-1">{value.title}</h3>
+                  <h3 className="text-sm font-bold text-foreground flex-1 whitespace-pre-line">
+                    {value.title}
+                  </h3>
                   <ChevronDown
                     className={`w-4 h-4 text-muted-foreground transition-transform ${
                       isOpen ? "rotate-180" : ""
