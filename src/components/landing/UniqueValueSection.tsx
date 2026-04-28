@@ -141,10 +141,10 @@ const UniqueValueSection = () => {
         <div className="hidden md:flex justify-center">
           <div
             className="relative"
-            style={{ width: "1100px", height: "600px", maxWidth: "100%" }}
+            style={{ width: "1430px", height: "780px", maxWidth: "100%" }}
           >
             <svg
-              viewBox="0 0 1100 600"
+              viewBox="0 0 1430 780"
               className="absolute inset-0 w-full h-full"
               style={{ overflow: "visible" }}
             >
