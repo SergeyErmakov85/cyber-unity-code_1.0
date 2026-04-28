@@ -70,7 +70,7 @@ const colorConfig = {
     stroke: "hsl(var(--accent))",
     glow: "hsla(var(--accent), 0.9)",
     fill: "hsla(var(--accent), 0.06)",
-    fillActive: "hsla(var(--accent), 0.55)",
+    fillActive: "hsla(var(--accent), 0.18)",
   },
 };
 
