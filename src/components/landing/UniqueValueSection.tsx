@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FlaskConical, Gamepad2, GraduationCap, Repeat, Eye, Zap, ChevronDown } from "lucide-react";
 
 const values = [
@@ -7,36 +8,42 @@ const values = [
     title: "Воспроизводимые\nэксперименты",
     description: "Каждый проект включает фиксированные seed-значения, версии зависимостей и детальные инструкции. Получите те же результаты, что и в примерах",
     color: "primary" as const,
+    link: "/code-examples",
   },
   {
     icon: Gamepad2,
     title: "Реальные\nигровые среды",
     description: "Не абстрактные задачи, а полноценные Unity-проекты. Обучайте агентов в 3D-мирах с физикой, визуализацией и интерактивностью",
     color: "secondary" as const,
+    link: "/unity-projects",
   },
   {
     icon: FlaskConical,
     title: "Научный\nподход",
     description: "Следуем лучшим практикам из исследований. Алгоритмы реализованы согласно оригинальным статьям с понятными объяснениями",
     color: "accent" as const,
+    link: "/hub/research",
   },
   {
     icon: Eye,
     title: "Визуализация\nобучения",
     description: "Наблюдайте за процессом в реальном времени. Графики наград, траектории агентов, распределения действий — всё визуализировано",
     color: "primary" as const,
+    link: "/visualizations",
   },
   {
     icon: GraduationCap,
     title: "От основ\nдо продвинутого",
     description: "Структурированная программа обучения. Начните с базовых концепций и дойдите до state-of-the-art алгоритмов",
     color: "secondary" as const,
+    link: "/courses",
   },
   {
     icon: Zap,
     title: "Практика\nс первого дня",
     description: "Никакой месячной подготовки. Запустите первого агента в первый же день обучения и сразу увидите результаты",
     color: "accent" as const,
+    link: "/courses/1-1",
   },
 ];
 
@@ -45,25 +52,25 @@ const colorConfig = {
     number: "text-primary",
     text: "text-primary",
     stroke: "hsl(var(--primary))",
-    glow: "hsla(var(--primary), 0.4)",
+    glow: "hsla(var(--primary), 0.55)",
     fill: "hsla(var(--primary), 0.04)",
-    fillActive: "hsla(var(--primary), 0.12)",
+    fillActive: "hsla(var(--primary), 0.22)",
   },
   secondary: {
     number: "text-secondary",
     text: "text-secondary",
     stroke: "hsl(var(--secondary))",
-    glow: "hsla(var(--secondary), 0.4)",
+    glow: "hsla(var(--secondary), 0.55)",
     fill: "hsla(var(--secondary), 0.04)",
-    fillActive: "hsla(var(--secondary), 0.12)",
+    fillActive: "hsla(var(--secondary), 0.22)",
   },
   accent: {
     number: "text-accent",
     text: "text-accent",
     stroke: "hsl(var(--accent))",
-    glow: "hsla(var(--accent), 0.4)",
+    glow: "hsla(var(--accent), 0.55)",
     fill: "hsla(var(--accent), 0.04)",
-    fillActive: "hsla(var(--accent), 0.12)",
+    fillActive: "hsla(var(--accent), 0.22)",
   },
 };
 
@@ -108,6 +115,7 @@ const positionOrder = [5, 0, 1, 2, 3, 4]; // index into `segments` for values 0.
 
 const UniqueValueSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
@@ -154,16 +162,17 @@ const UniqueValueSection = () => {
                     points={points}
                     fill={isOpen ? colors.fillActive : colors.fill}
                     stroke={colors.stroke}
-                    strokeWidth={isOpen ? 2.5 : 1.5}
+                    strokeWidth={isOpen ? 3 : 1.5}
                     style={{
                       filter: isOpen
-                        ? `drop-shadow(0 0 14px ${colors.glow}) drop-shadow(0 0 28px ${colors.glow})`
+                        ? `drop-shadow(0 0 18px ${colors.glow}) drop-shadow(0 0 36px ${colors.glow}) brightness(1.25)`
                         : `drop-shadow(0 0 6px ${colors.glow})`,
                       transition: "all 0.3s ease",
                       cursor: "pointer",
                     }}
                     onMouseEnter={() => setOpenIndex(i)}
                     onMouseLeave={() => setOpenIndex(null)}
+                    onClick={() => navigate(value.link)}
                   />
                 );
               })}
@@ -284,9 +293,20 @@ const UniqueValueSection = () => {
                   />
                 </div>
                 {isOpen && (
-                  <p className="text-xs text-muted-foreground leading-relaxed mt-3">
-                    {value.description}
-                  </p>
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {value.description}
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(value.link);
+                      }}
+                      className={`text-xs font-medium ${colors.text} hover:underline`}
+                    >
+                      Перейти →
+                    </button>
+                  </div>
                 )}
               </div>
             );
