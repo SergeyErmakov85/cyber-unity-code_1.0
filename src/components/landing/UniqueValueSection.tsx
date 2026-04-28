@@ -54,7 +54,7 @@ const colorConfig = {
     stroke: "hsl(var(--primary))",
     glow: "hsla(var(--primary), 0.9)",
     fill: "hsla(var(--primary), 0.06)",
-    fillActive: "hsla(var(--primary), 0.55)",
+    fillActive: "hsla(var(--primary), 0.18)",
   },
   secondary: {
     number: "text-secondary",
@@ -62,7 +62,7 @@ const colorConfig = {
     stroke: "hsl(var(--secondary))",
     glow: "hsla(var(--secondary), 0.9)",
     fill: "hsla(var(--secondary), 0.06)",
-    fillActive: "hsla(var(--secondary), 0.55)",
+    fillActive: "hsla(var(--secondary), 0.18)",
   },
   accent: {
     number: "text-accent",
@@ -70,7 +70,7 @@ const colorConfig = {
     stroke: "hsl(var(--accent))",
     glow: "hsla(var(--accent), 0.9)",
     fill: "hsla(var(--accent), 0.06)",
-    fillActive: "hsla(var(--accent), 0.55)",
+    fillActive: "hsla(var(--accent), 0.18)",
   },
 };
 
@@ -138,8 +138,8 @@ const UniqueValueSection = () => {
         {/* Desktop hexagon */}
         <div className="hidden md:flex justify-center">
           <div
-            className="relative"
-            style={{ width: "1860px", height: "1020px", maxWidth: "100%" }}
+            className="relative w-full"
+            style={{ maxWidth: "1860px", aspectRatio: "1860 / 1020" }}
           >
             <svg
               viewBox="0 0 1860 1020"
