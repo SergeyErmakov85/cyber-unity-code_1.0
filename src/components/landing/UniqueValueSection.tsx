@@ -293,9 +293,20 @@ const UniqueValueSection = () => {
                   />
                 </div>
                 {isOpen && (
-                  <p className="text-xs text-muted-foreground leading-relaxed mt-3">
-                    {value.description}
-                  </p>
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {value.description}
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(value.link);
+                      }}
+                      className={`text-xs font-medium ${colors.text} hover:underline`}
+                    >
+                      Перейти →
+                    </button>
+                  </div>
                 )}
               </div>
             );
