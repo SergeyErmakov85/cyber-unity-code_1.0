@@ -54,7 +54,7 @@ const colorConfig = {
     stroke: "hsl(var(--primary))",
     glow: "hsla(var(--primary), 0.9)",
     fill: "hsla(var(--primary), 0.06)",
-    fillActive: "hsla(var(--primary), 0.32)",
+    fillActive: "hsla(var(--primary), 0.55)",
   },
   secondary: {
     number: "text-secondary",
@@ -62,7 +62,7 @@ const colorConfig = {
     stroke: "hsl(var(--secondary))",
     glow: "hsla(var(--secondary), 0.9)",
     fill: "hsla(var(--secondary), 0.06)",
-    fillActive: "hsla(var(--secondary), 0.32)",
+    fillActive: "hsla(var(--secondary), 0.55)",
   },
   accent: {
     number: "text-accent",
@@ -70,16 +70,14 @@ const colorConfig = {
     stroke: "hsl(var(--accent))",
     glow: "hsla(var(--accent), 0.9)",
     fill: "hsla(var(--accent), 0.06)",
-    fillActive: "hsla(var(--accent), 0.32)",
+    fillActive: "hsla(var(--accent), 0.55)",
   },
 };
 
-// Hexagon geometry
-// Container: 1100x600. Center at (550, 300). Hex "radius" R = 280.
-// 6 vertices of a flat-top hexagon (angles 0, 60, 120, 180, 240, 300):
-const R = 364;
-const CX = 715;
-const CY = 390;
+// Hexagon geometry — flat-top hexagon with 6 trapezoid segments.
+const R = 474;
+const CX = 930;
+const CY = 510;
 const vertex = (deg: number) => ({
   x: CX + R * Math.cos((deg * Math.PI) / 180),
   y: CY + R * Math.sin((deg * Math.PI) / 180),
@@ -141,10 +139,10 @@ const UniqueValueSection = () => {
         <div className="hidden md:flex justify-center">
           <div
             className="relative"
-            style={{ width: "1430px", height: "780px", maxWidth: "100%" }}
+            style={{ width: "1860px", height: "1020px", maxWidth: "100%" }}
           >
             <svg
-              viewBox="0 0 1430 780"
+              viewBox="0 0 1860 1020"
               className="absolute inset-0 w-full h-full"
               style={{ overflow: "visible" }}
             >
@@ -191,9 +189,9 @@ const UniqueValueSection = () => {
               const colors = colorConfig[value.color];
               const isOpen = openIndex === i;
 
-              // Convert SVG coords -> percentage of container (1430x780)
-              const leftPct = (cx / 1430) * 100;
-              const topPct = (cy / 780) * 100;
+              // Convert SVG coords -> percentage of container (1860x1020)
+              const leftPct = (cx / 1860) * 100;
+              const topPct = (cy / 1020) * 100;
 
               return (
                 <div
