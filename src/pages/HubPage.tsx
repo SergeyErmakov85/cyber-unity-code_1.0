@@ -14,7 +14,7 @@ const HUB_CONTENT: Record<HubId, React.LazyExoticComponent<React.ComponentType>>
   pytorch: lazy(() => import("@/pages/PyTorchModule")),
   "unity-ml-agents": lazy(() => import("@/pages/UnityMLAgentsModule")),
   "deep-rl": lazy(() => import("@/pages/DeepRLModule")),
-  project: lazy(() => import("@/pages/ProjectsIndex")),
+  project: lazy(() => import("@/pages/UnityProjectsHub")),
   "math-rl": lazy(() => import("@/pages/MathRL")),
   "fca-rl": lazy(() => import("@/pages/FcaRlModule")),
 };
