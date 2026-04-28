@@ -38,7 +38,7 @@ const levels = [
       { title: "DQN с нуля на PyTorch", type: "lesson", path: "/courses/1-5" },
       { title: "Марковские процессы принятия решений (MDP)", type: "lesson", path: "/courses/1-6" },
       { title: "Exploration vs Exploitation", type: "lesson", path: "/courses/1-7" },
-      { title: "Проект: Балансировка шеста", type: "project", path: "/courses/project-1" },
+      { title: 'Проект-1: "Баланс в 3D"', type: "project", path: "/courses/project-1" },
     ],
   },
   {

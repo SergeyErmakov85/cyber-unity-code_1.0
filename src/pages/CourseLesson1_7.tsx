@@ -340,7 +340,7 @@ const CourseLesson1_7 = () => (
     level={1}
     lessonId="1-7"
     prevLesson={{ path: "/courses/1-6", title: "MDP" }}
-    nextLesson={{ path: "/courses/project-1", title: "Проект: Балансировка шеста" }}
+    nextLesson={{ path: "/courses/project-1", title: 'Проект-1: "Баланс в 3D"' }}
     keyConcepts={[
       "Дилемма исследования и использования",
       "Многорукий бандит как минимальная RL-среда",
@@ -948,7 +948,7 @@ Q_t(a) + c \\sqrt{\\frac{\\ln t}{N_t(a)}}
       title="Проверь себя: Exploration vs Exploitation"
       questions={quizQuestions}
       lessonPath="/courses/1-7"
-      nextLesson={{ path: "/courses/project-1", title: "Проект: Балансировка шеста" }}
+      nextLesson={{ path: "/courses/project-1", title: 'Проект-1: "Баланс в 3D"' }}
     />
   </LessonLayout>
 );

@@ -39,7 +39,7 @@ export const LEARNING_MAP: Stage[] = [
       { id: "1-5", slug: "basic-dqn", title: "DQN с нуля на PyTorch", type: "lesson", path: "/courses/1-5", contextLinks: linksFor("basic-dqn") },
       { id: "1-6", slug: "mdp", title: "Марковские процессы принятия решений (MDP)", type: "lesson", path: "/courses/1-6", contextLinks: linksFor("mdp") },
       { id: "1-7", slug: "exploration-exploitation", title: "Exploration vs Exploitation", type: "lesson", path: "/courses/1-7", contextLinks: linksFor("exploration-exploitation") },
-      { id: "p-1", slug: "project-1", title: "Проект: Балансировка шеста", type: "project", path: "/courses/project-1", contextLinks: linksFor("project-1") },
+      { id: "p-1", slug: "project-1", title: 'Проект-1: "Баланс в 3D"', type: "project", path: "/courses/project-1", contextLinks: linksFor("project-1") },
     ],
   },
   {

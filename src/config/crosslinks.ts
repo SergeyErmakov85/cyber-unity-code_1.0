@@ -43,10 +43,10 @@ export const CROSSLINKS: CrossLink[] = [
   { lessonId: "1-6", lessonPath: "/courses/1-6", lessonTitle: "MDP и уравнения Беллмана", lessonLevel: 1, hubPath: "/math-rl/module-5", hubAnchor: "глава-3", hubLabel: "Математика → Глава 3. MDP", contextInLesson: "Формальное описание MDP-среды", contextInHub: "MDP на практике (Урок 1.6)" },
   { lessonId: "1-6", lessonPath: "/courses/1-6", lessonTitle: "MDP и уравнения Беллмана", lessonLevel: 1, hubPath: "/math-rl/module-5", hubAnchor: "глава-6", hubLabel: "Математика → Глава 6. Model-Free RL", contextInLesson: "Переход от DP к Model-Free методам", contextInHub: "Связка с Model-Free (Урок 1.6)" },
 
-  // ── Проект 1: Балансировка шеста ──
-  { lessonId: "project-1", lessonPath: "/courses/project-1", lessonTitle: "Проект: Балансировка шеста", lessonLevel: 1, hubPath: "/unity-projects/ball-balance", hubLabel: "Unity → Ball Balance", contextInLesson: "Аналогичная задача балансировки в 3D Unity-среде", contextInHub: "Родственный проект (Проект 1)" },
-  { lessonId: "project-1", lessonPath: "/courses/project-1", lessonTitle: "Проект: Балансировка шеста", lessonLevel: 1, hubPath: "/algorithms/dqn", hubLabel: "Алгоритмы → DQN", contextInLesson: "Применение DQN для задачи балансировки", contextInHub: "Практическое применение DQN (Проект 1)" },
-  { lessonId: "project-1", lessonPath: "/courses/project-1", lessonTitle: "Проект: Балансировка шеста", lessonLevel: 1, hubPath: "/pytorch/cheatsheet", hubAnchor: "saving", hubLabel: "PyTorch → Сохранение", contextInLesson: "Сохранение обученной модели (state_dict)", contextInHub: "Сохранение модели (Проект 1)" },
+  // ── Проект-1: "Баланс в 3D" ──
+  { lessonId: "project-1", lessonPath: "/courses/project-1", lessonTitle: 'Проект-1: "Баланс в 3D"', lessonLevel: 1, hubPath: "/unity-projects/ball-balance", hubLabel: "Unity → Ball Balance", contextInLesson: "Полная реализация проекта в 3D Unity-среде", contextInHub: 'Родственный проект (Проект-1: "Баланс в 3D")' },
+  { lessonId: "project-1", lessonPath: "/courses/project-1", lessonTitle: 'Проект-1: "Баланс в 3D"', lessonLevel: 1, hubPath: "/algorithms/dqn", hubLabel: "Алгоритмы → DQN", contextInLesson: "Применение DQN для задачи балансировки", contextInHub: 'Практическое применение DQN (Проект-1: "Баланс в 3D")' },
+  { lessonId: "project-1", lessonPath: "/courses/project-1", lessonTitle: 'Проект-1: "Баланс в 3D"', lessonLevel: 1, hubPath: "/pytorch/cheatsheet", hubAnchor: "saving", hubLabel: "PyTorch → Сохранение", contextInLesson: "Сохранение обученной модели (state_dict)", contextInHub: 'Сохранение модели (Проект-1: "Баланс в 3D")' },
 
   // ── Урок 2.1: Policy Gradient ──
   { lessonId: "2-1", lessonPath: "/courses/2-1", lessonTitle: "Policy Gradient и REINFORCE", lessonLevel: 2, hubPath: "/deep-rl", hubAnchor: "algorithms", hubLabel: "Deep RL → Алгоритмы", contextInLesson: "Policy Gradient как альтернатива value-based методам", contextInHub: "Теорема градиента политики (Урок 2.1)" },
