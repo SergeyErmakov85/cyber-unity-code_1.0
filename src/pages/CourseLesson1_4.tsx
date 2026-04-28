@@ -22,6 +22,9 @@ import {
   CheckCircle2,
   BookOpen,
   TrendingDown,
+  Target,
+  Trophy,
+  Download,
 } from "lucide-react";
 import CrossLinkToHub from "@/components/CrossLinkToHub";
 
