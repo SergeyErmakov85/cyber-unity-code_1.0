@@ -54,7 +54,7 @@ const colorConfig = {
     stroke: "hsl(var(--primary))",
     glow: "hsla(var(--primary), 0.9)",
     fill: "hsla(var(--primary), 0.06)",
-    fillActive: "hsla(var(--primary), 0.55)",
+    fillActive: "hsla(var(--primary), 0.18)",
   },
   secondary: {
     number: "text-secondary",
