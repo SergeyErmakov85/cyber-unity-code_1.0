@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FlaskConical, Gamepad2, GraduationCap, Repeat, Eye, Zap, ChevronDown } from "lucide-react";
 
 const values = [
@@ -7,36 +8,42 @@ const values = [
     title: "Воспроизводимые\nэксперименты",
     description: "Каждый проект включает фиксированные seed-значения, версии зависимостей и детальные инструкции. Получите те же результаты, что и в примерах",
     color: "primary" as const,
+    link: "/code-examples",
   },
   {
     icon: Gamepad2,
     title: "Реальные\nигровые среды",
     description: "Не абстрактные задачи, а полноценные Unity-проекты. Обучайте агентов в 3D-мирах с физикой, визуализацией и интерактивностью",
     color: "secondary" as const,
+    link: "/unity-projects",
   },
   {
     icon: FlaskConical,
     title: "Научный\nподход",
     description: "Следуем лучшим практикам из исследований. Алгоритмы реализованы согласно оригинальным статьям с понятными объяснениями",
     color: "accent" as const,
+    link: "/hub/research",
   },
   {
     icon: Eye,
     title: "Визуализация\nобучения",
     description: "Наблюдайте за процессом в реальном времени. Графики наград, траектории агентов, распределения действий — всё визуализировано",
     color: "primary" as const,
+    link: "/visualizations",
   },
   {
     icon: GraduationCap,
     title: "От основ\nдо продвинутого",
     description: "Структурированная программа обучения. Начните с базовых концепций и дойдите до state-of-the-art алгоритмов",
     color: "secondary" as const,
+    link: "/courses",
   },
   {
     icon: Zap,
     title: "Практика\nс первого дня",
     description: "Никакой месячной подготовки. Запустите первого агента в первый же день обучения и сразу увидите результаты",
     color: "accent" as const,
+    link: "/courses/1-1",
   },
 ];
 
