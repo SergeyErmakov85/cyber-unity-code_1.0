@@ -165,8 +165,8 @@ const UniqueValueSection = () => {
                     strokeWidth={isOpen ? 3 : 1.5}
                     style={{
                       filter: isOpen
-                        ? `drop-shadow(0 0 18px ${colors.glow}) drop-shadow(0 0 36px ${colors.glow}) brightness(1.25)`
-                        : `drop-shadow(0 0 6px ${colors.glow})`,
+                        ? `drop-shadow(0 0 24px ${colors.glow}) drop-shadow(0 0 48px ${colors.glow}) drop-shadow(0 0 80px ${colors.glow}) brightness(1.4)`
+                        : `drop-shadow(0 0 12px ${colors.glow}) drop-shadow(0 0 24px ${colors.glow})`,
                       transition: "all 0.3s ease",
                       cursor: "pointer",
                     }}
