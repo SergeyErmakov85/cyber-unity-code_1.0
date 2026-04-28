@@ -189,9 +189,9 @@ const UniqueValueSection = () => {
               const colors = colorConfig[value.color];
               const isOpen = openIndex === i;
 
-              // Convert SVG coords -> percentage of container (1430x780)
-              const leftPct = (cx / 1430) * 100;
-              const topPct = (cy / 780) * 100;
+              // Convert SVG coords -> percentage of container (1860x1020)
+              const leftPct = (cx / 1860) * 100;
+              const topPct = (cy / 1020) * 100;
 
               return (
                 <div
