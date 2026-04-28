@@ -158,7 +158,7 @@ const Navbar = () => {
               <Code2 className="w-4 h-4 text-accent shrink-0" />
               <span className="text-sm font-medium text-foreground whitespace-nowrap">Deep RL</span>
             </button>
-            <button onClick={() => navigate("/hub/project")} className={`flex items-center justify-center gap-2 w-[148px] h-10 rounded-full bg-card/60 backdrop-blur-sm border transition-all duration-300 cursor-pointer hover:scale-105 ${location.pathname === "/hub/project" ? "border-secondary/70 bg-secondary/15 shadow-glow-purple" : "border-secondary/30 shadow-glow-purple hover:bg-secondary/10"}`}>
+            <button onClick={() => navigate("/unity-projects")} className={`flex items-center justify-center gap-2 w-[148px] h-10 rounded-full bg-card/60 backdrop-blur-sm border transition-all duration-300 cursor-pointer hover:scale-105 ${location.pathname === "/unity-projects" ? "border-secondary/70 bg-secondary/15 shadow-glow-purple" : "border-secondary/30 shadow-glow-purple hover:bg-secondary/10"}`}>
               <Rocket className="w-4 h-4 text-secondary shrink-0" />
               <span className="text-sm font-medium text-foreground whitespace-nowrap">Проекты</span>
             </button>
@@ -258,7 +258,7 @@ const Navbar = () => {
                     { href: "/hub/pytorch", label: "PyTorch", Icon: Brain, color: "text-primary" },
                     { href: "/hub/unity-ml-agents", label: "Unity ML-Agents", Icon: Gamepad2, color: "text-secondary" },
                     { href: "/hub/deep-rl", label: "Deep RL", Icon: Code2, color: "text-accent" },
-                    { href: "/hub/project", label: "Проекты", Icon: Rocket, color: "text-secondary" },
+                    { href: "/unity-projects", label: "Проекты", Icon: Rocket, color: "text-secondary" },
                     { href: "/hub/math-rl", label: "Математика RL", Icon: Sparkles, color: "text-accent" },
                     { href: "/algorithms", label: "Алгоритмы RL", Icon: Cpu, color: "text-blue-400" },
                     { href: "/hub/research", label: "Исследования RL", Icon: Microscope, color: "text-yellow-400" },
