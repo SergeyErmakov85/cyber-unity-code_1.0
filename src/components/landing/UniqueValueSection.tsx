@@ -115,6 +115,7 @@ const positionOrder = [5, 0, 1, 2, 3, 4]; // index into `segments` for values 0.
 
 const UniqueValueSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
