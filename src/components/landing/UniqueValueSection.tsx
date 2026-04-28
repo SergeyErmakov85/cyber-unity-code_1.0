@@ -53,24 +53,24 @@ const colorConfig = {
     text: "text-primary",
     stroke: "hsl(var(--primary))",
     glow: "hsla(var(--primary), 0.6)",
-    fill: "hsla(var(--primary), 0.04)",
-    fillActive: "hsla(var(--primary), 0.55)",
+    fill: "transparent",
+    fillActive: "hsla(var(--primary), 0.32)",
   },
   secondary: {
     number: "text-secondary",
     text: "text-secondary",
     stroke: "hsl(var(--secondary))",
     glow: "hsla(var(--secondary), 0.6)",
-    fill: "hsla(var(--secondary), 0.04)",
-    fillActive: "hsla(var(--secondary), 0.55)",
+    fill: "transparent",
+    fillActive: "hsla(var(--secondary), 0.32)",
   },
   accent: {
     number: "text-accent",
     text: "text-accent",
     stroke: "hsl(var(--accent))",
     glow: "hsla(var(--accent), 0.6)",
-    fill: "hsla(var(--accent), 0.04)",
-    fillActive: "hsla(var(--accent), 0.55)",
+    fill: "transparent",
+    fillActive: "hsla(var(--accent), 0.32)",
   },
 };
 
@@ -167,6 +167,7 @@ const UniqueValueSection = () => {
                         : "none",
                       transition: "all 0.4s ease",
                       cursor: "pointer",
+                      pointerEvents: "all",
                     }}
                     onMouseEnter={() => setOpenIndex(i)}
                     onMouseLeave={() => setOpenIndex(null)}
