@@ -52,25 +52,25 @@ const colorConfig = {
     number: "text-primary",
     text: "text-primary",
     stroke: "hsl(var(--primary))",
-    glow: "hsla(var(--primary), 0.55)",
-    fill: "hsla(var(--primary), 0.04)",
-    fillActive: "hsla(var(--primary), 0.22)",
+    glow: "hsla(var(--primary), 0.9)",
+    fill: "hsla(var(--primary), 0.06)",
+    fillActive: "hsla(var(--primary), 0.32)",
   },
   secondary: {
     number: "text-secondary",
     text: "text-secondary",
     stroke: "hsl(var(--secondary))",
-    glow: "hsla(var(--secondary), 0.55)",
-    fill: "hsla(var(--secondary), 0.04)",
-    fillActive: "hsla(var(--secondary), 0.22)",
+    glow: "hsla(var(--secondary), 0.9)",
+    fill: "hsla(var(--secondary), 0.06)",
+    fillActive: "hsla(var(--secondary), 0.32)",
   },
   accent: {
     number: "text-accent",
     text: "text-accent",
     stroke: "hsl(var(--accent))",
-    glow: "hsla(var(--accent), 0.55)",
-    fill: "hsla(var(--accent), 0.04)",
-    fillActive: "hsla(var(--accent), 0.22)",
+    glow: "hsla(var(--accent), 0.9)",
+    fill: "hsla(var(--accent), 0.06)",
+    fillActive: "hsla(var(--accent), 0.32)",
   },
 };
 
@@ -165,8 +165,8 @@ const UniqueValueSection = () => {
                     strokeWidth={isOpen ? 3 : 1.5}
                     style={{
                       filter: isOpen
-                        ? `drop-shadow(0 0 18px ${colors.glow}) drop-shadow(0 0 36px ${colors.glow}) brightness(1.25)`
-                        : `drop-shadow(0 0 6px ${colors.glow})`,
+                        ? `drop-shadow(0 0 24px ${colors.glow}) drop-shadow(0 0 48px ${colors.glow}) drop-shadow(0 0 80px ${colors.glow}) brightness(1.4)`
+                        : `drop-shadow(0 0 12px ${colors.glow}) drop-shadow(0 0 24px ${colors.glow})`,
                       transition: "all 0.3s ease",
                       cursor: "pointer",
                     }}
